@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import { siteConfig } from '../config/site';
+
+const upcomingEvents = [
+  {
+    title: 'Tech Talk: Building Modern Web Apps',
+    date: '2024-02-15',
+    time: '6:00 PM',
+    location: 'Kansas City Tech Hub',
+    description: 'Join us for an evening of learning about modern web development practices.',
+  },
+  {
+    title: 'Hack Night: Open Source Contributions',
+    date: '2024-02-22',
+    time: '7:00 PM',
+    location: 'Virtual',
+    description: 'Collaborate on open source projects and learn from fellow developers.',
+  },
+  {
+    title: 'Workshop: Introduction to TypeScript',
+    date: '2024-03-01',
+    time: '6:30 PM',
+    location: 'Kansas City Tech Hub',
+    description: 'Learn TypeScript fundamentals and best practices for your projects.',
+  },
+];
+---
+
+<BaseLayout title="Home">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 text-white">
+    <div class="absolute inset-0 bg-grid-white/[0.05] bg-[length:20px_20px]"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 font-display">
+          Welcome to Kansas City Tech Enthusiasts
+        </h1>
+        <p class="text-xl sm:text-2xl mb-8 text-primary-100">
+          Connecting developers, designers, and innovators in the heart of the Midwest
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button href="/events" variant="secondary" size="lg" class="bg-white text-primary-600 hover:bg-gray-100">
+            View Events
+          </Button>
+          <Button href="/contact" variant="outline" size="lg" class="border-white text-white hover:bg-white/10">
+            Join Our Community
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Highlights -->
+  <section class="py-16 sm:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-display">
+          Why Join Us?
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          We're a vibrant community passionate about technology, innovation, and collaboration.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Card class="p-8 text-center hover:shadow-xl transition-shadow">
+          <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Networking</h3>
+          <p class="text-gray-600">
+            Connect with like-minded professionals and build lasting relationships in the tech community.
+          </p>
+        </Card>
+        
+        <Card class="p-8 text-center hover:shadow-xl transition-shadow">
+          <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Learning</h3>
+          <p class="text-gray-600">
+            Attend workshops, tech talks, and hack nights to expand your skills and knowledge.
+          </p>
+        </Card>
+        
+        <Card class="p-8 text-center hover:shadow-xl transition-shadow">
+          <div class="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Innovation</h3>
+          <p class="text-gray-600">
+            Collaborate on projects, share ideas, and push the boundaries of what's possible.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Events -->
+  <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-display">
+          Upcoming Events
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Join us for our next meetup, workshop, or hack night.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {upcomingEvents.slice(0, 3).map((event) => (
+          <Card class="p-6 hover:shadow-xl transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                <div class="flex flex-col space-y-1 text-sm text-gray-600">
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {event.time}
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {event.location}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600 mb-4">{event.description}</p>
+            <Button href="/events" variant="outline" size="sm" class="w-full">
+              Learn More
+            </Button>
+          </Card>
+        ))}
+      </div>
+      
+      <div class="text-center">
+        <Button href="/events" variant="primary" size="lg">
+          View All Events
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section class="py-16 sm:py-24 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 font-display">
+          Stay Connected
+        </h2>
+        <p class="text-xl mb-8 text-primary-100">
+          Get the latest updates on events, workshops, and community news.
+        </p>
+        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" method="POST" action="/api/newsletter" netlify>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <Button type="submit" variant="secondary" size="md" class="bg-white text-primary-600 hover:bg-gray-100 whitespace-nowrap">
+            Subscribe
+          </Button>
+        </form>
+        <p class="text-sm text-primary-100 mt-4">
+          We respect your privacy. Unsubscribe at any time.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

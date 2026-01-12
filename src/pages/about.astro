@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/ui/Card.astro';
+import { siteConfig } from '../config/site';
+
+const stats = [
+  { label: 'Members', value: '500+' },
+  { label: 'Events', value: '50+' },
+  { label: 'Years Active', value: '5+' },
+  { label: 'Projects', value: '100+' },
+];
+
+const values = [
+  {
+    title: 'Inclusivity',
+    description: 'We welcome everyone regardless of background, experience level, or expertise. Our community thrives on diversity.',
+    icon: '👥',
+  },
+  {
+    title: 'Collaboration',
+    description: 'We believe in working together to solve problems, share knowledge, and build amazing things.',
+    icon: '🤝',
+  },
+  {
+    title: 'Growth',
+    description: 'We support continuous learning and personal development through workshops, talks, and hands-on projects.',
+    icon: '📈',
+  },
+  {
+    title: 'Innovation',
+    description: 'We encourage experimentation, creativity, and pushing the boundaries of what\'s possible with technology.',
+    icon: '💡',
+  },
+];
+---
+
+<BaseLayout title="About Us">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 text-white py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 font-display">
+          About Kansas City Tech Enthusiasts
+        </h1>
+        <p class="text-xl sm:text-2xl text-primary-100">
+          Building a stronger tech community, one connection at a time
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="py-16 sm:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 font-display text-center">
+          Our Mission
+        </h2>
+        <div class="prose prose-lg max-w-none text-gray-600">
+          <p class="text-lg mb-4">
+            Kansas City Tech Enthusiasts is a vibrant community dedicated to bringing together developers, designers, entrepreneurs, and tech enthusiasts from across the Kansas City metropolitan area. We believe in the power of connection, collaboration, and continuous learning.
+          </p>
+          <p class="text-lg mb-4">
+            Our mission is to create an inclusive space where people can share knowledge, work on projects together, learn new technologies, and build lasting professional relationships. Whether you're a seasoned developer or just starting your tech journey, you'll find a welcoming community here.
+          </p>
+          <p class="text-lg">
+            Through regular meetups, workshops, hack nights, and social events, we foster an environment that encourages innovation, supports growth, and celebrates the diverse perspectives that make our community strong.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {stats.map((stat) => (
+          <div class="text-center">
+            <div class="text-4xl sm:text-5xl font-bold text-primary-600 mb-2 font-display">
+              {stat.value}
+            </div>
+            <div class="text-lg text-gray-600 font-medium">
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-16 sm:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-display">
+          Our Values
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          These core values guide everything we do as a community.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {values.map((value) => (
+          <Card class="p-6 hover:shadow-xl transition-shadow">
+            <div class="text-4xl mb-4">{value.icon}</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
+            <p class="text-gray-600">{value.description}</p>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Join CTA -->
+  <section class="py-16 sm:py-24 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 font-display">
+          Join Our Community
+        </h2>
+        <p class="text-xl mb-8 text-primary-100">
+          Ready to be part of something amazing? Join us at our next event or reach out to learn more.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/events" class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-semibold bg-white text-primary-600 hover:bg-gray-100 transition-colors">
+            View Events
+          </a>
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-3 rounded-lg font-semibold border-2 border-white text-white hover:bg-white/10 transition-colors">
+            Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
