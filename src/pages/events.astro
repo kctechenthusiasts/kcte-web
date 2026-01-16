@@ -1,98 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Card from '../components/ui/Card.astro';
 import Button from '../components/ui/Button.astro';
-import { siteConfig } from '../config/site';
-
-const upcomingEvents = [
-  {
-    id: 1,
-    title: 'Tech Talk: Building Modern Web Apps',
-    date: '2024-02-15',
-    time: '6:00 PM - 8:00 PM',
-    location: 'Kansas City Tech Hub',
-    address: '123 Main St, Kansas City, MO 64108',
-    description: 'Join us for an evening of learning about modern web development practices. We\'ll cover React, Next.js, and best practices for building scalable applications.',
-    type: 'Tech Talk',
-    capacity: 50,
-  },
-  {
-    id: 2,
-    title: 'Hack Night: Open Source Contributions',
-    date: '2024-02-22',
-    time: '7:00 PM - 10:00 PM',
-    location: 'Virtual',
-    address: 'Online via Zoom',
-    description: 'Collaborate on open source projects and learn from fellow developers. Bring your laptop and ideas!',
-    type: 'Hack Night',
-    capacity: 100,
-  },
-  {
-    id: 3,
-    title: 'Workshop: Introduction to TypeScript',
-    date: '2024-03-01',
-    time: '6:30 PM - 9:00 PM',
-    location: 'Kansas City Tech Hub',
-    address: '123 Main St, Kansas City, MO 64108',
-    description: 'Learn TypeScript fundamentals and best practices for your projects. Perfect for JavaScript developers looking to level up.',
-    type: 'Workshop',
-    capacity: 30,
-  },
-  {
-    id: 4,
-    title: 'Networking Mixer',
-    date: '2024-03-08',
-    time: '6:00 PM - 9:00 PM',
-    location: 'Local Brewery',
-    address: '456 Oak Ave, Kansas City, MO 64111',
-    description: 'Casual networking event with drinks and snacks. Meet fellow tech enthusiasts and expand your network.',
-    type: 'Networking',
-    capacity: 75,
-  },
-];
-
-const pastEvents = [
-  {
-    id: 5,
-    title: 'AI & Machine Learning Panel',
-    date: '2024-01-18',
-    type: 'Panel Discussion',
-  },
-  {
-    id: 6,
-    title: 'React Workshop',
-    date: '2024-01-11',
-    type: 'Workshop',
-  },
-  {
-    id: 7,
-    title: 'Holiday Hackathon',
-    date: '2023-12-15',
-    type: 'Hackathon',
-  },
-];
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    weekday: 'long',
-    month: 'long', 
-    day: 'numeric', 
-    year: 'numeric' 
-  });
-};
-
-const getEventTypeColor = (type: string) => {
-  const colors: Record<string, string> = {
-    'Tech Talk': 'bg-primary-100 text-primary-700',
-    'Workshop': 'bg-secondary-100 text-secondary-700',
-    'Hack Night': 'bg-accent-100 text-accent-700',
-    'Networking': 'bg-purple-100 text-purple-700',
-    'Panel Discussion': 'bg-blue-100 text-blue-700',
-    'Hackathon': 'bg-green-100 text-green-700',
-  };
-  return colors[type] || 'bg-gray-100 text-gray-700';
-};
 ---
 
 <BaseLayout title="Events">
@@ -110,89 +18,22 @@ const getEventTypeColor = (type: string) => {
     </div>
   </section>
 
-  <!-- Upcoming Events -->
+  <!-- Meetup Events -->
   <section class="py-16 sm:py-24 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8 font-display">
-        Upcoming Events
-      </h2>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {upcomingEvents.map((event) => (
-          <Card class="p-8 hover:shadow-xl transition-shadow">
-            <div class="flex items-start justify-between mb-4">
-              <div class="flex-1">
-                <div class="flex items-center gap-3 mb-3">
-                  <span class={`px-3 py-1 rounded-full text-sm font-semibold ${getEventTypeColor(event.type)}`}>
-                    {event.type}
-                  </span>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">{event.title}</h3>
-                
-                <div class="space-y-3 mb-6">
-                  <div class="flex items-start">
-                    <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <div>
-                      <div class="font-semibold text-gray-900">{formatDate(event.date)}</div>
-                      <div class="text-gray-600">{event.time}</div>
-                    </div>
-                  </div>
-                  
-                  <div class="flex items-start">
-                    <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <div>
-                      <div class="font-semibold text-gray-900">{event.location}</div>
-                      <div class="text-gray-600">{event.address}</div>
-                    </div>
-                  </div>
-                  
-                  {event.capacity && (
-                    <div class="flex items-start">
-                      <svg class="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                      <div class="text-gray-600">Capacity: {event.capacity} attendees</div>
-                    </div>
-                  )}
-                </div>
-                
-                <p class="text-gray-600 mb-6">{event.description}</p>
-                
-                <Button href="/contact" variant="primary" size="md" class="w-full sm:w-auto">
-                  RSVP Now
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Past Events -->
-  <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8 font-display">
-        Past Events
-      </h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {pastEvents.map((event) => (
-          <Card class="p-6">
-            <div class="flex items-center gap-3 mb-3">
-              <span class={`px-3 py-1 rounded-full text-sm font-semibold ${getEventTypeColor(event.type)}`}>
-                {event.type}
-              </span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-            <p class="text-gray-600">{formatDate(event.date)}</p>
-          </Card>
-        ))}
+      <div class="max-w-4xl mx-auto">
+        <p class="text-lg text-gray-600 mb-8 text-center">
+          Join us on Meetup to RSVP for upcoming events and connect with the Kansas City tech community.
+        </p>
+        <iframe
+          src="https://widgets.sociablekit.com/meetup-group-events/iframe/25644406"
+          frameborder="0"
+          width="100%"
+          height="1000"
+          style="border: none; overflow: hidden;"
+          scrolling="no"
+          title="Meetup Events"
+        ></iframe>
       </div>
     </div>
   </section>
@@ -207,7 +48,7 @@ const getEventTypeColor = (type: string) => {
         <p class="text-xl mb-8 text-primary-100">
           Have an idea for a workshop, talk, or meetup? We'd love to hear from you!
         </p>
-        <Button href="/contact" variant="secondary" size="lg" class="bg-white text-primary-600 hover:bg-gray-100">
+        <Button href="/contact" size="lg" class="!bg-white !text-primary-600 hover:!bg-gray-100">
           Get in Touch
         </Button>
       </div>

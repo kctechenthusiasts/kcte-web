@@ -3,7 +3,7 @@ import Button from '../ui/Button.astro';
 import { siteConfig } from '../../config/site';
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+<header class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <a href="/" class="flex items-center space-x-2">
@@ -18,7 +18,7 @@ import { siteConfig } from '../../config/site';
         <a href="/events" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Events</a>
         <a href="/topics" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Topics</a>
         <a href="/contact" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Contact</a>
-        <Button href="/contact" variant="primary" size="sm">Join Us</Button>
+        <Button href="/contact" variant="primary" size="sm">Connect with Us</Button>
       </div>
 
       <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
@@ -35,7 +35,7 @@ import { siteConfig } from '../../config/site';
         <a href="/events" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Events</a>
         <a href="/topics" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Topics</a>
         <a href="/contact" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Contact</a>
-        <Button href="/contact" variant="primary" size="sm" class="w-full">Join Us</Button>
+        <Button href="/contact" variant="primary" size="sm" class="w-full">Connect with Us</Button>
       </div>
     </div>
   </nav>

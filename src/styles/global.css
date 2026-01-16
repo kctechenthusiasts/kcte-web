@@ -34,3 +34,8 @@
     @apply bg-white text-gray-900;
   }
 }
+
+/* Ensure header stays above third-party widgets */
+header {
+  z-index: 9999 !important;
+}
