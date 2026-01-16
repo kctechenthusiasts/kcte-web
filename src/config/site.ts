@@ -5,7 +5,6 @@ export const siteConfig = {
   url: 'https://kctechenthusiasts.com',
   ogImage: '/og-image.jpg',
   links: {
-    twitter: 'https://twitter.com/kctechenthusiasts',
     github: 'https://github.com/kctechenthusiasts',
     linkedin: 'https://linkedin.com/company/kctechenthusiasts',
     discord: 'https://discord.gg/kctechenthusiasts',

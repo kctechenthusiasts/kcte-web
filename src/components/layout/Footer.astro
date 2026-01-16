@@ -13,14 +13,12 @@ import { siteConfig } from '../../config/site';
           {siteConfig.description}
         </p>
         <div class="flex space-x-4">
-          {siteConfig.links.twitter && (
-            <a href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-primary-400 transition-colors">
-              <span class="sr-only">Twitter</span>
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-              </svg>
-            </a>
-          )}
+          <button id="signal-btn-footer" class="text-gray-400 hover:text-primary-400 transition-colors cursor-pointer">
+            <span class="sr-only">Signal</span>
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </button>
           {siteConfig.links.github && (
             <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-primary-400 transition-colors">
               <span class="sr-only">GitHub</span>
@@ -75,3 +73,54 @@ import { siteConfig } from '../../config/site';
     </div>
   </div>
 </footer>
+
+<!-- Signal Modal -->
+<div id="signal-modal" class="fixed inset-0 z-[10000] hidden items-center justify-center bg-black/50">
+  <div class="bg-white rounded-lg shadow-xl p-6 mx-4 max-w-sm">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900">Join our Signal Group</h3>
+      <button id="signal-modal-close" class="text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <p class="text-gray-600">Contact Evan, Jesse, or Cayden for the link to join the Signal group.</p>
+  </div>
+</div>
+
+<script>
+  const signalModal = document.getElementById('signal-modal');
+  const signalModalClose = document.getElementById('signal-modal-close');
+
+  const openModal = () => {
+    if (signalModal) {
+      signalModal.classList.remove('hidden');
+      signalModal.classList.add('flex');
+    }
+  };
+
+  const closeModal = () => {
+    if (signalModal) {
+      signalModal.classList.add('hidden');
+      signalModal.classList.remove('flex');
+    }
+  };
+
+  // Handle all Signal buttons on the page
+  document.querySelectorAll('[id^="signal-btn"]').forEach(btn => {
+    btn.addEventListener('click', openModal);
+  });
+
+  if (signalModalClose) {
+    signalModalClose.addEventListener('click', closeModal);
+  }
+
+  if (signalModal) {
+    signalModal.addEventListener('click', (e) => {
+      if (e.target === signalModal) {
+        closeModal();
+      }
+    });
+  }
+</script>
