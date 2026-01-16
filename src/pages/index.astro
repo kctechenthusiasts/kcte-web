@@ -2,31 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
-import { siteConfig } from '../config/site';
 
-const upcomingEvents = [
-  {
-    title: 'Tech Talk: Building Modern Web Apps',
-    date: '2024-02-15',
-    time: '6:00 PM',
-    location: 'Kansas City Tech Hub',
-    description: 'Join us for an evening of learning about modern web development practices.',
-  },
-  {
-    title: 'Hack Night: Open Source Contributions',
-    date: '2024-02-22',
-    time: '7:00 PM',
-    location: 'Virtual',
-    description: 'Collaborate on open source projects and learn from fellow developers.',
-  },
-  {
-    title: 'Workshop: Introduction to TypeScript',
-    date: '2024-03-01',
-    time: '6:30 PM',
-    location: 'Kansas City Tech Hub',
-    description: 'Learn TypeScript fundamentals and best practices for your projects.',
-  },
-];
 ---
 
 <BaseLayout title="Home">
@@ -116,44 +92,19 @@ const upcomingEvents = [
           Join us for our next meetup, workshop, or hack night.
         </p>
       </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {upcomingEvents.slice(0, 3).map((event) => (
-          <Card class="p-6 hover:shadow-xl transition-shadow">
-            <div class="flex items-start justify-between mb-4">
-              <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-                <div class="flex flex-col space-y-1 text-sm text-gray-600">
-                  <div class="flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </div>
-                  <div class="flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {event.time}
-                  </div>
-                  <div class="flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    {event.location}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 mb-4">{event.description}</p>
-            <Button href="/events" variant="outline" size="sm" class="w-full">
-              Learn More
-            </Button>
-          </Card>
-        ))}
+
+      <div class="max-w-4xl mx-auto mb-8">
+        <iframe
+          src="https://widgets.sociablekit.com/meetup-group-events/iframe/25644406"
+          frameborder="0"
+          width="100%"
+          height="1000"
+          style="border: none; overflow: hidden;"
+          scrolling="no"
+          title="Meetup Events"
+        ></iframe>
       </div>
-      
+
       <div class="text-center">
         <Button href="/events" variant="primary" size="lg">
           View All Events
