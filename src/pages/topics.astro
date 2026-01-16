@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Input from '../components/ui/Input.astro';
 import Textarea from '../components/ui/Textarea.astro';
-import Card from '../components/ui/Card.astro';
 ---
 
 <BaseLayout title="Suggest a Topic">
@@ -104,17 +103,121 @@ import Card from '../components/ui/Card.astro';
         </h2>
 
         <div id="topics-list" class="grid gap-6">
-          <Card class="p-6">
+          <!-- Loading State -->
+          <div id="loading-state" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="text-center text-gray-500 py-8">
+              <svg class="w-12 h-12 mx-auto mb-4 text-primary-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p class="text-lg font-medium">Loading topic suggestions...</p>
+            </div>
+          </div>
+
+          <!-- Empty State (hidden by default) -->
+          <div id="empty-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <div class="text-center text-gray-500 py-8">
               <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-              <p class="text-lg font-medium">Topic suggestions will be displayed here</p>
-              <p class="mt-2 text-sm">Submit your idea above and it will appear in this list!</p>
+              <p class="text-lg font-medium">No topic suggestions yet</p>
+              <p class="mt-2 text-sm">Be the first to submit an idea above!</p>
             </div>
-          </Card>
+          </div>
+
+          <!-- Error State (hidden by default) -->
+          <div id="error-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="text-center text-gray-500 py-8">
+              <svg class="w-12 h-12 mx-auto mb-4 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <p class="text-lg font-medium">Unable to load topics</p>
+              <p class="mt-2 text-sm">Please try refreshing the page.</p>
+            </div>
+          </div>
+
+          <!-- Topics Container (populated by JavaScript) -->
+          <div id="topics-container" class="contents"></div>
         </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  interface TopicSubmission {
+    id: string;
+    createdAt: string;
+    name: string;
+    topicName: string;
+    topicDescription: string;
+  }
+
+  async function loadTopics() {
+    const loadingState = document.getElementById('loading-state');
+    const emptyState = document.getElementById('empty-state');
+    const errorState = document.getElementById('error-state');
+    const topicsContainer = document.getElementById('topics-container');
+
+    try {
+      const response = await fetch('/.netlify/functions/get-topic-submissions');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch topics');
+      }
+
+      const data = await response.json();
+      const submissions: TopicSubmission[] = data.submissions || [];
+
+      // Hide loading state
+      loadingState?.classList.add('hidden');
+
+      if (submissions.length === 0) {
+        // Show empty state
+        emptyState?.classList.remove('hidden');
+        return;
+      }
+
+      // Render topics
+      if (topicsContainer) {
+        topicsContainer.innerHTML = submissions
+          .map((submission) => {
+            const date = new Date(submission.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+
+            return `
+              <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                  <h3 class="text-xl font-bold text-gray-900 font-display">${escapeHtml(submission.topicName)}</h3>
+                </div>
+                <p class="text-gray-600 mb-4">${escapeHtml(submission.topicDescription)}</p>
+                <div class="flex items-center text-sm text-gray-500">
+                  <span class="font-medium text-gray-700">${escapeHtml(submission.name)}</span>
+                  <span class="mx-2">•</span>
+                  <span>${date}</span>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+      }
+    } catch (error) {
+      console.error('Error loading topics:', error);
+      // Hide loading state and show error state
+      loadingState?.classList.add('hidden');
+      errorState?.classList.remove('hidden');
+    }
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Load topics when the page loads
+  document.addEventListener('DOMContentLoaded', loadTopics);
+</script>
