@@ -44,6 +44,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Poppins', 'system-ui', 'sans-serif'],
+        elegant: ['Playfair Display', 'Georgia', 'serif'],
       },
     },
   },
