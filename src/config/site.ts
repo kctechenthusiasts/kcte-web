@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Kansas City Tech Enthusiasts',
   shortName: 'KCTE',
-  description: 'A vibrant community of tech enthusiasts in Kansas City, connecting developers, designers, and innovators.',
+  description: 'A friendly, casual group connecting tech enthusiasts, developers, designers, innovators, and curious minds.',
   url: 'https://kctechenthusiasts.com',
   ogImage: '/og-image.jpg',
   links: {
