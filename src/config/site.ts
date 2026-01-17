@@ -7,6 +7,6 @@ export const siteConfig = {
   links: {
     github: 'https://github.com/kctechenthusiasts',
     linkedin: 'https://linkedin.com/company/kctechenthusiasts',
-    discord: 'https://discord.gg/kctechenthusiasts',
+    discord: 'https://discord.gg/PChH4WVHQP',
   },
 };
