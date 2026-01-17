@@ -11,7 +11,7 @@
     <path d="M 56.387 -57.704 C 59.206 -51.047 63.158 -43.956 66.143 -37.445 L 66.143 5.685 L 56.387 5.685 L 56.387 -57.704 Z" style="fill: rgb(32, 147, 210); fill-opacity: 1;"/>
     <path d="M 75.513 -19.607 C 78.978 -12.983 82.297 -6.512 85.283 -0.001 L 85.283 5.69 L 75.513 5.69 L 75.513 -19.607 Z" style="fill: rgb(32, 147, 210); fill-opacity: 1;"/>
   </g>
-  <g transform="translate(400, 320)">
-    <text x="0" y="0" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="95" fill="rgb(21, 23, 24)">KCTE</text>
+  <g transform="translate(400, 312)">
+    <text x="0" y="0" text-anchor="middle" dominant-baseline="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="95" fill="rgb(21, 23, 24)">KCTE</text>
   </g>
 </svg>
