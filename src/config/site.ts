@@ -9,7 +9,4 @@ export const siteConfig = {
     linkedin: 'https://linkedin.com/company/kctechenthusiasts',
     discord: 'https://discord.gg/kctechenthusiasts',
   },
-  contact: {
-    email: 'hello@kctechenthusiasts.com',
-  },
 };
