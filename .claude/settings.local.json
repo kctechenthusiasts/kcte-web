@@ -7,7 +7,11 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "WebSearch",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git -C /Users/evan/git/orgs/kctechenthusiasts/kcte-web status)",
+      "Bash(git -C /Users/evan/git/orgs/kctechenthusiasts/kcte-web add src/components/layout/Header.astro)",
+      "Bash(git -C /Users/evan/git/orgs/kctechenthusiasts/kcte-web diff)",
+      "Bash(git -C /Users/evan/git/orgs/kctechenthusiasts/kcte-web log --oneline -10)"
     ]
   }
 }
