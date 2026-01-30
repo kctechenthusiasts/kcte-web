@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
@@ -24,9 +24,24 @@ export function TopicCard({
 }: TopicCardProps) {
   const [isVoting, setIsVoting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const upvoteTopic = useMutation(api.topics.upvoteTopic);
   const removeUpvote = useMutation(api.topics.removeUpvote);
+
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isExpanded]);
 
   const handleVote = async () => {
     if (isVoting) return;
@@ -49,7 +64,21 @@ export function TopicCard({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
+    <div
+      ref={cardRef}
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("button")) return;
+        setIsExpanded(!isExpanded);
+      }}
+      className={`
+        bg-white rounded-lg border border-gray-200 p-4 cursor-pointer
+        transition-all duration-300 ease-out
+        ${isExpanded
+          ? "shadow-xl scale-[1.02] z-10 relative"
+          : "shadow-md hover:shadow-lg"
+        }
+      `}
+    >
       <div className="flex gap-4">
         {/* Upvote button */}
         <div className="flex flex-col items-center">
@@ -88,7 +117,16 @@ export function TopicCard({
         {/* Content */}
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-semibold text-gray-900 mb-1">{title}</h3>
-          <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
+          <p className={`text-gray-600 text-sm transition-all duration-300 ${
+            isExpanded ? "" : "line-clamp-2"
+          }`}>
+            {description}
+          </p>
+          {!isExpanded && description.length > 100 && (
+            <span className="text-primary-500 text-xs mt-1 block">
+              Click to read more
+            </span>
+          )}
         </div>
       </div>
 

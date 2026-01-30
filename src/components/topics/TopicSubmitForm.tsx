@@ -116,13 +116,13 @@ export function TopicSubmitForm({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What would you like to learn or discuss about this topic?"
-            maxLength={500}
+            maxLength={650}
             rows={3}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none resize-none"
           />
           <p className="mt-1 text-xs text-gray-500">
-            {description.length}/500 characters
+            {description.length}/650 characters
           </p>
         </div>
 

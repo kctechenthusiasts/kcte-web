@@ -89,8 +89,8 @@ export const submitTopic = mutation({
     if (title.length < 3 || title.length > 100) {
       throw new Error("Title must be between 3 and 100 characters.");
     }
-    if (description.length < 10 || description.length > 500) {
-      throw new Error("Description must be between 10 and 500 characters.");
+    if (description.length < 10 || description.length > 650) {
+      throw new Error("Description must be between 10 and 650 characters.");
     }
 
     // Insert the topic

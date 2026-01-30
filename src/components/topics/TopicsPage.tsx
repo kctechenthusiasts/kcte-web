@@ -6,14 +6,26 @@ import { TopicSubmitForm } from "./TopicSubmitForm";
 import { getVisitorFingerprint } from "../../lib/fingerprint";
 import { api } from "../../../convex/_generated/api";
 
+const TOPICS_PER_PAGE = 20;
+
 function TopicsPageContent() {
   const [visitorFingerprint, setVisitorFingerprint] = useState<string | null>(
     null
   );
   const [showForm, setShowForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch topics
   const topics = useQuery(api.topics.listTopics);
+
+  // Calculate pagination
+  const totalTopics = topics?.length ?? 0;
+  const totalPages = Math.ceil(totalTopics / TOPICS_PER_PAGE);
+  const showPagination = totalTopics > TOPICS_PER_PAGE;
+  const paginatedTopics = topics?.slice(
+    (currentPage - 1) * TOPICS_PER_PAGE,
+    currentPage * TOPICS_PER_PAGE
+  );
 
   // Get vote status for all topics
   const topicIds = topics?.map((t) => t._id) ?? [];
@@ -107,7 +119,7 @@ function TopicsPageContent() {
             </p>
           </div>
         ) : (
-          topics.map((topic) => (
+          paginatedTopics?.map((topic) => (
             <TopicCard
               key={topic._id}
               id={topic._id}
@@ -120,6 +132,51 @@ function TopicsPageContent() {
           ))
         )}
       </div>
+
+      {/* Pagination */}
+      {showPagination && (
+        <div className="mt-8 flex items-center justify-center gap-2">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              currentPage === 1
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Previous
+          </button>
+
+          <div className="flex items-center gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                  currentPage === page
+                    ? "bg-primary-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              currentPage === totalPages
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
