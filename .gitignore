@@ -34,3 +34,14 @@ pnpm-debug.log*
 
 # Claude
 settings.local.json
+
+# Astro generated cache/types
+.astro/
+
+# Playwright
+test-results/
+playwright-report/
+
+# Design handoff bundle (reference only; removed after sign-off)
+docs/design/handoff-*/
+docs/design/*-handoff.zip

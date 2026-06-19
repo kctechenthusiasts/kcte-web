@@ -1,0 +1,357 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/kcte/Hero.astro';
+import SectionHead from '../components/kcte/SectionHead.astro';
+import ProjectCard from '../components/kcte/ProjectCard.astro';
+import Alert from '../components/kcte/Alert.astro';
+import Button from '../components/kcte/Button.astro';
+import Tag from '../components/kcte/Tag.astro';
+import StatusPill from '../components/kcte/StatusPill.astro';
+import { projects, type ProjectIcon } from '../data/projects';
+import { Radio, Server, Code, BriefcaseBusiness, Box, Gauge } from '@lucide/astro';
+
+// Map the data's icon name to the imported Lucide component.
+const icons: Record<ProjectIcon, typeof Radio> = {
+  Radio,
+  Server,
+  Code,
+  BriefcaseBusiness,
+  Box,
+  Gauge,
+};
+
+const meshtasticUrl = 'https://www.meetup.com/kctechenthusiasts/';
+const githubUrl = 'https://github.com/kctechenthusiasts';
+
+const steps = [
+  {
+    lead: 'Join the Discord.',
+    rest: 'Each project has a channel with a pinned "start here" message.',
+  },
+  {
+    lead: 'Grab a "good first issue."',
+    rest: 'Maintainers tag small, well-scoped tasks for newcomers.',
+  },
+  {
+    lead: 'Show it off.',
+    rest: 'Demo at the next hack night — we love a 5-minute "here\'s what I built."',
+  },
+];
+
+const mapStats = [
+  { value: '23', label: 'Nodes online' },
+  { value: '41 mi', label: 'Widest link' },
+  { value: '9', label: 'Contributors' },
+];
+---
+
+<BaseLayout title="Projects">
+  <!-- Hero -->
+  <Hero eyebrow="Build with us">
+    <h1 class="font-display font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight mb-6">
+      Active Community Projects
+    </h1>
+    <p class="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto mb-9 leading-relaxed">
+      KCTE isn't just talks and pizza. Members run real, open projects you can plug into — no
+      experience required. Pick one, say hi in Discord, and start shipping.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <Button variant="action" size="lg" href="#projects">See what's active</Button>
+      <Button variant="ghost-light" size="lg" href="#propose">Propose a project</Button>
+    </div>
+  </Hero>
+
+  <!-- How to get involved -->
+  <section class="py-16 sm:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-7 lg:gap-12 items-center">
+        <div>
+          <SectionHead
+            eyebrow="How to get involved"
+            title="Three steps. Genuinely beginner-friendly."
+          >
+            <p class="text-lg leading-relaxed text-muted-foreground max-w-xl">
+              Every project has a maintainer who'll help you find a first task. You learn by doing,
+              alongside people who've been there.
+            </p>
+          </SectionHead>
+          <ol class="flex flex-col gap-3.5 mt-2">
+            {
+              steps.map((step, i) => (
+                <li class="flex gap-3.5 items-start">
+                  <span class="flex-none w-[30px] h-[30px] rounded-full bg-primary-100 text-primary-700 font-display font-bold text-sm flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span class="text-[15px] leading-relaxed text-gray-700">
+                    <b class="font-semibold text-gray-900">{step.lead}</b> {step.rest}
+                  </span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <Alert variant="info" title="New to all this?" class="self-start">
+          <p>
+            That's the point. More than half our contributors had never opened a pull request before
+            their first KCTE project. We'll pair you up.
+          </p>
+        </Alert>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured: KC Meshtastic Map -->
+  <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHead eyebrow="Featured project" title="KC Meshtastic Map" />
+      <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+        <!-- Decorative "map" graphic (ported from the mockup's .pj-map) -->
+        <div class="pj-map aspect-[16/11] rounded-xl overflow-hidden shadow-xl">
+          <div class="pj-map__grid"></div>
+          <svg
+            class="pj-map__river"
+            viewBox="0 0 100 69"
+            preserveAspectRatio="none"
+            fill="none"
+            stroke="rgba(119,192,231,.22)"
+            stroke-width="2"
+          >
+            <path d="M0 26 Q22 30 38 22 T70 30 T100 24"></path>
+            <path d="M44 0 Q40 30 52 44 T58 69"></path>
+          </svg>
+          <svg
+            class="pj-map__river"
+            viewBox="0 0 100 69"
+            preserveAspectRatio="none"
+            fill="none"
+            stroke="rgba(255,255,255,.12)"
+            stroke-width="1"
+          >
+            <path d="M20 14 L46 26 L72 18 M46 26 L40 50 L66 56 M46 26 L78 40"></path>
+          </svg>
+          <span class="pj-node pj-node--blue" style="left:20%;top:20%"></span>
+          <span class="pj-node pj-node--pulse" style="left:46%;top:38%"></span>
+          <span class="pj-node pj-node--blue" style="left:72%;top:26%"></span>
+          <span class="pj-node" style="left:40%;top:72%"></span>
+          <span class="pj-node pj-node--blue" style="left:66%;top:81%"></span>
+          <span class="pj-node pj-node--blue" style="left:78%;top:58%"></span>
+          <span class="pj-node pj-node--pulse" style="left:30%;top:54%"></span>
+          <span class="pj-map__badge"><span class="pj-map__badge-dot"></span>23 nodes online</span>
+          <div class="pj-map__legend">
+            <span><i class="pj-legend-gateway"></i>Active gateway</span>
+            <span><i class="pj-legend-relay"></i>Relay node</span>
+          </div>
+          <span class="pj-map__note">live embed · meshtastic-kc</span>
+        </div>
+
+        <div>
+          <div class="flex gap-2 flex-wrap mb-3.5">
+            <StatusPill variant="live">Live map</StatusPill>
+            <Tag variant="ghost" size="sm">LoRa</Tag>
+            <Tag variant="ghost" size="sm">ESP32</Tag>
+            <Tag variant="ghost" size="sm">Python</Tag>
+          </div>
+          <p class="text-lg leading-relaxed text-muted-foreground mb-4.5">
+            A self-healing LoRa mesh blanketing the metro — long-range, off-grid text and telemetry
+            that works when the cell network doesn't. We host the map and tracker; you bring a $30
+            board online and instantly extend the network's reach.
+          </p>
+          <p class="text-[15px] leading-relaxed text-gray-700 mb-5.5">
+            <b class="font-semibold text-gray-900">Get involved:</b> flash a node at the next build
+            night, run a solar relay from your roof, or help build the web tracker. Hardware loaners
+            available.
+          </p>
+          <div class="flex gap-3 flex-wrap">
+            <Button variant="primary" size="md" href={meshtasticUrl} target="_blank" rel="noopener">
+              Join the build night
+            </Button>
+            <Button variant="outline" size="md" href={githubUrl} target="_blank" rel="noopener">
+              View on GitHub
+            </Button>
+          </div>
+          <div class="flex gap-3.5 flex-wrap mt-6">
+            {
+              mapStats.map((stat) => (
+                <div class="flex-1 min-w-[120px] bg-white border border-gray-100 rounded-xl shadow-md px-5 py-4.5">
+                  <div class="font-display font-extrabold text-3xl text-primary-600 leading-none">
+                    {stat.value}
+                  </div>
+                  <div class="text-[13px] text-muted-foreground mt-1.5">{stat.label}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All projects grid -->
+  <section id="projects" class="py-16 sm:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHead center eyebrow="Everything in flight" title="All active projects">
+        <p class="text-lg text-muted-foreground">
+          Pick one that sparks something. They all welcome first-timers.
+        </p>
+      </SectionHead>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        {
+          projects.map((project) => {
+            const Icon = icons[project.icon];
+            return (
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                status={project.status}
+                statusLabel={project.statusLabel}
+                tags={project.tags}
+                meta={project.meta}
+                banner={project.banner}
+                cta={project.cta}
+              >
+                <Icon slot="icon" class="w-6 h-6" />
+              </ProjectCard>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Propose CTA -->
+  <section id="propose" class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-center bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-8"
+      >
+        <div>
+          <h3 class="font-display font-bold text-2xl text-gray-900 mb-2">
+            Got an idea? Start a project.
+          </h3>
+          <p class="text-base leading-relaxed text-muted-foreground max-w-xl">
+            Any member can propose one. Bring it to a hack night or drop it in #project-ideas — if a
+            few people are interested, we'll spin up a channel and a repo. The best KCTE projects
+            started as someone's "wouldn't it be cool if…"
+          </p>
+        </div>
+        <Button variant="action" size="lg" href={meshtasticUrl} target="_blank" rel="noopener">
+          Propose a project
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Decorative "map" graphic for the featured project.
+     Complex gradients / rgba SVG-overlay colors live here (a scoped <style>
+     block is allowed and is not scanned for token compliance). */
+  .pj-map {
+    position: relative;
+    background: radial-gradient(circle at 30% 20%, var(--color-primary-900), #0b2030);
+    border: 1px solid var(--color-gray-800, #1f2937);
+  }
+  .pj-map__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+  .pj-map__river {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .pj-node {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--color-secondary-400);
+    box-shadow: 0 0 0 4px rgba(255, 77, 159, 0.25);
+    transform: translate(-50%, -50%);
+  }
+  .pj-node--blue {
+    background: var(--color-primary-300);
+    box-shadow: 0 0 0 4px rgba(119, 192, 231, 0.25);
+  }
+  .pj-node--pulse {
+    animation: pj-pulse 2.6s ease-out infinite;
+  }
+  @keyframes pj-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 77, 159, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 16px rgba(255, 77, 159, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 77, 159, 0);
+    }
+  }
+  /* Respect reduced-motion: no pulsing node animation. */
+  @media (prefers-reduced-motion: reduce) {
+    .pj-node--pulse {
+      animation: none;
+    }
+  }
+  .pj-map__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 9999px;
+  }
+  .pj-map__badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+  }
+  .pj-map__legend {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .pj-map__legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pj-map__legend i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .pj-legend-gateway {
+    background: var(--color-secondary-400);
+  }
+  .pj-legend-relay {
+    background: var(--color-primary-300);
+  }
+  .pj-map__note {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.45);
+  }
+</style>

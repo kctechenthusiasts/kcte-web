@@ -1,52 +1,91 @@
 ---
-import Button from '../ui/Button.astro';
+import Button from '../kcte/Button.astro';
 import { siteConfig } from '../../config/site';
+
+const path = Astro.url.pathname;
+// "Home" is intentionally omitted — the logo + wordmark link home.
+// /projects and /blog still build and are reachable by URL, but are intentionally
+// omitted from the nav until that content is ready to surface.
+const nav = [
+  { href: '/about', label: 'About' },
+  { href: '/events', label: 'Events' },
+  { href: '/topics', label: 'Topics' },
+  { href: '/contact', label: 'Contact' },
+];
+const isActive = (href: string) => path.startsWith(href);
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex h-28 items-center justify-between">
-      <a href="/" class="flex items-center space-x-2">
-        <img src="/KcteLogo.png" alt="Kansas City Tech Enthusiasts Logo" class="h-[90px] w-auto" />
-        <span class="text-3xl font-bold tracking-tight text-gray-900 uppercase" style="font-family: 'Poppins', sans-serif;">Kansas City Tech Enthusiasts</span>
+    <div class="flex h-24 lg:h-28 items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3 shrink-0" aria-label="Kansas City Tech Enthusiasts — home">
+        <img src="/brand/kcte-logo-transparent.png" alt="" class="h-14 sm:h-20 lg:h-24 w-auto" />
+        <span class="font-display font-bold uppercase tracking-tight text-gray-900 text-lg sm:text-2xl lg:text-3xl leading-none whitespace-nowrap">
+          {/* "KC" when space is tight (phones, and the lg–xl band where the nav competes); the full
+              name where there's room (tablets in the menu, and ≥xl desktops). */}
+          <span class="inline sm:hidden lg:inline xl:hidden">KC</span><span
+            class="hidden sm:inline lg:hidden xl:inline">Kansas City</span> Tech Enthusiasts
+        </span>
       </a>
-      
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="/" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Home</a>
-        <a href="/about" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">About</a>
-        <a href="/events" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Events</a>
-        <a href="/topics" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Topics</a>
-        <a href="/contact" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Contact</a>
-        <Button href="/events" variant="primary" size="sm" class="!bg-[#FF4B3C] hover:!bg-[#e6432f]">Meetup</Button>
+
+      <div class="hidden lg:flex items-center gap-5">
+        {
+          nav.map((n) => (
+            <a
+              href={n.href}
+              class={[
+                'font-medium text-sm transition-colors',
+                isActive(n.href) ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600',
+              ].join(' ')}
+              aria-current={isActive(n.href) ? 'page' : undefined}
+            >
+              {n.label}
+            </a>
+          ))
+        }
+        <Button href={siteConfig.links.meetup} variant="action" size="sm" target="_blank" rel="noopener">Meetup</Button>
       </div>
 
-      <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+      <button
+        id="mobile-menu-button"
+        class="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden pb-4">
-      <div class="flex flex-col space-y-4 pt-4">
-        <a href="/" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Home</a>
-        <a href="/about" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">About</a>
-        <a href="/events" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Events</a>
-        <a href="/topics" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Topics</a>
-        <a href="/contact" class="text-gray-700 hover:text-primary-600 font-medium transition-colors">Contact</a>
-        <Button href="/events" variant="primary" size="sm" class="w-full !bg-[#FF4B3C] hover:!bg-[#e6432f]">Meetup</Button>
+    <div id="mobile-menu" class="hidden lg:hidden pb-4">
+      <div class="flex flex-col gap-1 pt-2">
+        {
+          nav.map((n) => (
+            <a
+              href={n.href}
+              class={[
+                'font-medium py-2 transition-colors',
+                isActive(n.href) ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600',
+              ].join(' ')}
+            >
+              {n.label}
+            </a>
+          ))
+        }
+        <Button href={siteConfig.links.meetup} variant="action" size="sm" block class="mt-2" target="_blank" rel="noopener">
+          Meetup
+        </Button>
       </div>
     </div>
   </nav>
 </header>
 
 <script>
-  const menuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
-  if (menuButton && mobileMenu) {
-    menuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-  }
+  const btn = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const hidden = menu?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(hidden === false));
+  });
 </script>

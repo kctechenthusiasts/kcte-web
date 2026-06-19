@@ -1,0 +1,60 @@
+---
+import Tag from './Tag.astro';
+import StatusPill from './StatusPill.astro';
+import { ArrowRight } from '@lucide/astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  status?: 'active' | 'recruiting' | 'idea' | 'live';
+  statusLabel?: string;
+  tags?: string[];
+  meta?: string;
+  href?: string;
+  cta?: string;
+  /** Tailwind gradient color stops for the banner, e.g. "from-primary-700 to-primary-400". */
+  banner?: string;
+  class?: string;
+}
+const {
+  title,
+  description,
+  status = 'active',
+  statusLabel = 'Active',
+  tags = [],
+  meta,
+  href = '#',
+  cta = 'Get involved',
+  banner = 'from-primary-700 to-primary-400',
+  class: className = '',
+} = Astro.props;
+---
+
+<article
+  class={['flex flex-col h-full bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-shadow hover:shadow-xl', className]
+    .filter(Boolean)
+    .join(' ')}
+>
+  <div class={['h-[116px] relative flex items-end p-3.5 bg-gradient-to-br', banner].join(' ')}>
+    <span class="relative w-12 h-12 rounded-lg bg-white/90 flex items-center justify-center text-primary-700 shadow-sm">
+      <slot name="icon" />
+    </span>
+  </div>
+  <div class="p-5 flex flex-col gap-2.5 flex-1">
+    <div><StatusPill variant={status}>{statusLabel}</StatusPill></div>
+    <h3 class="font-display font-bold text-[19px] text-gray-900 m-0">{title}</h3>
+    {description && <p class="text-sm leading-relaxed text-muted-foreground m-0 flex-1">{description}</p>}
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-1.5">{tags.map((t) => <Tag variant="ghost" size="sm">{t}</Tag>)}</div>
+    )}
+  </div>
+  <div class="flex items-center justify-between gap-3 px-5 pb-5">
+    {meta ? <span class="text-[13px] text-muted-foreground">{meta}</span> : <span></span>}
+    <a
+      href={href}
+      class="inline-flex items-center gap-1.5 text-primary-600 hover:bg-primary-50 rounded-lg px-2 py-1 text-sm font-semibold transition-colors"
+    >
+      {cta}<ArrowRight class="w-4 h-4" />
+    </a>
+  </div>
+</article>

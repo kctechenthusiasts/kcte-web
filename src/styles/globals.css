@@ -1,0 +1,289 @@
+/* Google Fonts @import MUST precede `@import "tailwindcss";` (CSS @import ordering rule).
+   Phase 3 self-hosts these as .woff2. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   KCTE brand primitives (Tailwind v4 CSS-first @theme).
+   The numbered ramps the design's components reference directly
+   (bg-primary-600, text-secondary-700, bg-action, …). The shadcn
+   semantic role layer below maps onto these by role.
+   ============================================================ */
+@theme {
+  /* Primary — Electric Blue #2293D2 */
+  --color-primary-50: #e8f4fb;
+  --color-primary-100: #c5e4f5;
+  --color-primary-200: #9ed2ee;
+  --color-primary-300: #77c0e7;
+  --color-primary-400: #4faee0;
+  --color-primary-500: #2293d2;
+  --color-primary-600: #1d7bb1;
+  --color-primary-700: #186490;
+  --color-primary-800: #134d6f;
+  --color-primary-900: #0e364e;
+
+  /* Secondary / Accent — Bright Pink #FF1493 (identical ramps) */
+  --color-secondary-50: #fff0f6;
+  --color-secondary-100: #ffe0ed;
+  --color-secondary-200: #ffc2db;
+  --color-secondary-300: #ff85be;
+  --color-secondary-400: #ff4d9f;
+  --color-secondary-500: #ff1493;
+  --color-secondary-600: #e6007d;
+  --color-secondary-700: #c20068;
+  --color-secondary-800: #9c0054;
+  --color-secondary-900: #780042;
+
+  --color-accent-50: #fff0f6;
+  --color-accent-100: #ffe0ed;
+  --color-accent-200: #ffc2db;
+  --color-accent-300: #ff85be;
+  --color-accent-400: #ff4d9f;
+  --color-accent-500: #ff1493;
+  --color-accent-600: #e6007d;
+  --color-accent-700: #c20068;
+  --color-accent-800: #9c0054;
+  --color-accent-900: #780042;
+
+  /* Action Red — the single "Meetup / act now" CTA. Brand-locked #FF4B3C.
+     White-on-action is 3.32:1 → meets WCAG AA for LARGE/bold text (3:1) only;
+     used exclusively for large bold CTA labels, never normal-size body text.
+     Kept a brand utility (not a gated semantic role) so it stays exactly on-brand. */
+  --color-action: #ff4b3c;
+  --color-action-hover: #e6432f;
+
+  /* Illustrative brand red (logo skyline) + logo wordmark ink */
+  --color-brand-red: #f4402e;
+  --color-ink: #151718;
+
+  /* Type families */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-elegant: 'Playfair Display', Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Keep the sticky header above third-party (Meetup) widget iframes */
+header {
+  z-index: 9999 !important;
+}
+
+/* Animated pulsing blue→pink hero gradient (applied with a bg-gradient utility in markup) */
+@keyframes gradient-pulse {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: 100% 50%;
+  }
+}
+.hero-gradient,
+.kcte-hero-gradient {
+  background-size: 200% 200%;
+  animation: gradient-pulse 8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient,
+  .kcte-hero-gradient {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   shadcn @theme inline — wiring only (var() refs, never values).
+   Exposes the semantic roles below as Tailwind color utilities.
+   ============================================================ */
+@theme inline {
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-error-foreground: var(--error-foreground);
+  --color-error: var(--error);
+  --color-info-foreground: var(--info-foreground);
+  --color-info: var(--info);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning: var(--warning);
+  --color-success-foreground: var(--success-foreground);
+  --color-success: var(--success);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ============================================================
+   Semantic roles — light. Mapped onto the KCTE brand ramps by
+   ROLE. Values are the ramp steps that clear WCAG AA (verified):
+   primary 4.65:1, secondary 4.51:1, destructive 4.83:1.
+   ============================================================ */
+:root {
+  --radius: 0.5rem; /* KCTE base radius (buttons/inputs) */
+
+  --background: oklch(1 0 0);                       /* white */
+  --foreground: oklch(0.2101 0.0318 264.66);        /* gray-900 #111827 */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2101 0.0318 264.66);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2101 0.0318 264.66);
+
+  --primary: oklch(0.5568 0.1175 240.22);           /* primary-600 #1d7bb1 */
+  --primary-foreground: oklch(1 0 0);               /* white — 4.65:1 */
+  --secondary: oklch(0.6000 0.2438 358.97);         /* secondary-600 #e6007d */
+  --secondary-foreground: oklch(1 0 0);             /* white — 4.51:1 */
+  --muted: oklch(0.9670 0.0029 264.54);             /* gray-100 #f3f4f6 */
+  --muted-foreground: oklch(0.4461 0.0263 256.80);  /* gray-600 #4b5563 — 6.87:1 */
+  --accent: oklch(0.9670 0.0029 264.54);            /* gray-100 — neutral hover surface */
+  --accent-foreground: oklch(0.2101 0.0318 264.66); /* gray-900 */
+  --destructive: oklch(0.5771 0.2152 27.33);        /* #dc2626 */
+  --destructive-foreground: oklch(1 0 0);           /* white — 4.83:1 */
+
+  --border: oklch(0.9276 0.0058 264.53);            /* gray-200 #e5e7eb */
+  --input: oklch(0.9276 0.0058 264.53);
+  --ring: oklch(0.6328 0.1339 239.75);              /* primary-500 #2293d2 */
+
+  /* Additive status roles for alerts (surface + ink-on-surface). Verified AA. */
+  --success: oklch(0.9624 0.0434 156.74); --success-foreground: oklch(0.5273 0.1371 150.07); /* 4.57:1 */
+  --warning: oklch(0.9796 0.0158 73.68);  --warning-foreground: oklch(0.4698 0.1430 37.30);  /* 6.88:1 */
+  --info: #e8f4fb;                        --info-foreground: #134d6f;                         /* 8.09:1 */
+  --error: #fee2e2;                       --error-foreground: #b91c1c;                        /* 5.30:1 */
+
+  /* Charts — brand-tinted (the marketing site has none; kept for /brand) */
+  --chart-1: oklch(0.6328 0.1339 239.75);
+  --chart-2: oklch(0.6549 0.2613 356.94);
+  --chart-3: oklch(0.6690 0.2186 29.01);
+  --chart-4: oklch(0.4806 0.0998 240.03);
+  --chart-5: oklch(0.5280 0.2144 359.17);
+
+  /* Sidebar — shadcn defaults (unused by the marketing site) */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.2101 0.0318 264.66);
+  --sidebar-primary: oklch(0.5568 0.1175 240.22);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.2101 0.0318 264.66);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.6328 0.1339 239.75);
+}
+
+/* ============================================================
+   Semantic roles — dark. KCTE ships light-only; this block exists
+   so the static contrast gate passes in both themes and the /brand
+   page has a working toggle. Brand hue held, neutrals inverted.
+   ============================================================ */
+.dark {
+  --background: oklch(0.2101 0.0318 264.66);        /* gray-900 */
+  --foreground: oklch(0.9846 0.0017 247.84);        /* gray-50 */
+  --card: oklch(0.2781 0.0296 256.85);              /* gray-800 */
+  --card-foreground: oklch(0.9846 0.0017 247.84);
+  --popover: oklch(0.2781 0.0296 256.85);
+  --popover-foreground: oklch(0.9846 0.0017 247.84);
+
+  --primary: #4faee0;                               /* primary-400 (lifted) */
+  --primary-foreground: #0b2030;                    /* dark navy — 6.70:1 */
+  --secondary: #ff85be;                             /* secondary-300 (lifted) */
+  --secondary-foreground: #4a0026;                  /* deep magenta — 7.09:1 */
+  --muted: oklch(0.2781 0.0296 256.85);             /* gray-800 */
+  --muted-foreground: oklch(0.7137 0.0192 261.32);  /* gray-400 — 6.99:1 */
+  --accent: oklch(0.2781 0.0296 256.85);
+  --accent-foreground: oklch(0.9846 0.0017 247.84);
+  --destructive: oklch(0.5771 0.2152 27.33);        /* #dc2626 */
+  --destructive-foreground: oklch(1 0 0);           /* 4.83:1 */
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #4faee0;
+
+  --success: oklch(0.9624 0.0434 156.74); --success-foreground: oklch(0.5273 0.1371 150.07);
+  --warning: oklch(0.9796 0.0158 73.68);  --warning-foreground: oklch(0.4698 0.1430 37.30);
+  --info: #e8f4fb;                        --info-foreground: #134d6f;
+  --error: #fee2e2;                       --error-foreground: #b91c1c;
+
+  --chart-1: oklch(0.6328 0.1339 239.75);
+  --chart-2: oklch(0.6549 0.2613 356.94);
+  --chart-3: oklch(0.6690 0.2186 29.01);
+  --chart-4: oklch(0.4806 0.0998 240.03);
+  --chart-5: oklch(0.5280 0.2144 359.17);
+
+  --sidebar: oklch(0.2781 0.0296 256.85);
+  --sidebar-foreground: oklch(0.9846 0.0017 247.84);
+  --sidebar-primary: #4faee0;
+  --sidebar-primary-foreground: #0b2030;
+  --sidebar-accent: oklch(0.2781 0.0296 256.85);
+  --sidebar-accent-foreground: oklch(0.9846 0.0017 247.84);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #4faee0;
+}
+
+/* ============================================================
+   Long-form article prose (blog). Map Tailwind Typography's
+   --tw-prose-* to the semantic tokens so prose tracks the theme
+   and survives the rendered-contrast check.
+   ============================================================ */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--border);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--secondary);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--card-foreground);
+  --tw-prose-pre-bg: var(--card);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}

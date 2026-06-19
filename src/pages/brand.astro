@@ -1,0 +1,598 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ThemeToggle from '../components/brand/ThemeToggle.tsx';
+import TokenSwatches from '../components/brand/TokenSwatches.tsx';
+
+// KCTE components — every one gets a specimen below.
+import Button from '../components/kcte/Button.astro';
+import Tag from '../components/kcte/Tag.astro';
+import Avatar from '../components/kcte/Avatar.astro';
+import AvatarStack from '../components/kcte/AvatarStack.astro';
+import PersonChip from '../components/kcte/PersonChip.astro';
+import StatusPill from '../components/kcte/StatusPill.astro';
+import Alert from '../components/kcte/Alert.astro';
+import Card from '../components/kcte/Card.astro';
+import Hero from '../components/kcte/Hero.astro';
+import SectionHead from '../components/kcte/SectionHead.astro';
+import CTABand from '../components/kcte/CTABand.astro';
+import EventCard from '../components/kcte/EventCard.astro';
+import ProjectCard from '../components/kcte/ProjectCard.astro';
+
+// Iconography — Lucide, named imports only, one set.
+import {
+  Calendar, Users, Code, Rocket, Sparkles, MapPin, MessageCircle,
+  Heart, Zap, Coffee, Lightbulb, Palette, Terminal, Network,
+} from '@lucide/astro';
+
+const adjectives = ['Bright', 'Bold', 'Energetic', 'Inclusive', 'Friendly'];
+
+const buttonVariants = [
+  'primary', 'secondary', 'action', 'outline', 'ghost', 'outline-light', 'ghost-light',
+] as const;
+const buttonSizes = ['sm', 'md', 'lg'] as const;
+const lightOnDark = new Set(['outline-light', 'ghost-light']);
+
+const tagVariants = ['workshop', 'talk', 'hacknight', 'social', 'online', 'solid', 'ghost'] as const;
+const statusVariants = ['active', 'recruiting', 'idea', 'live'] as const;
+const alertVariants = [
+  { variant: 'info', title: 'Heads up', body: 'The August hack night moved to the new downtown space.' },
+  { variant: 'success', title: 'You are in', body: 'Your RSVP for the React workshop is confirmed.' },
+  { variant: 'warn', title: 'Almost full', body: 'Only a few seats left — grab one before Friday.' },
+  { variant: 'error', title: 'Something went wrong', body: 'We could not save your topic. Please try again.' },
+] as const;
+
+const avatarSizes = ['sm', 'md', 'lg', 'xl'] as const;
+const avatarColors = ['blue', 'pink', 'ink'] as const;
+
+const navSections = [
+  ['#color', 'Color'],
+  ['#typography', 'Typography'],
+  ['#spacing', 'Spacing'],
+  ['#radius', 'Radius'],
+  ['#shadow', 'Shadow'],
+  ['#components', 'Components'],
+  ['#iconography', 'Iconography'],
+  ['#logo', 'Logo'],
+  ['#accessibility', 'Accessibility'],
+];
+
+// Spacing scale (Tailwind steps) — bars sized via inline width so the visual
+// length tracks the real rem value rather than a class lookup.
+const spacingSteps = [
+  { step: '1', rem: '0.25rem' },
+  { step: '2', rem: '0.5rem' },
+  { step: '3', rem: '0.75rem' },
+  { step: '4', rem: '1rem' },
+  { step: '6', rem: '1.5rem' },
+  { step: '8', rem: '2rem' },
+  { step: '12', rem: '3rem' },
+  { step: '16', rem: '4rem' },
+];
+
+const radii = [
+  { cls: 'rounded-sm', label: 'sm' },
+  { cls: 'rounded-md', label: 'md' },
+  { cls: 'rounded-lg', label: 'lg' },
+  { cls: 'rounded-xl', label: 'xl' },
+  { cls: 'rounded-full', label: 'full' },
+];
+
+const shadows = [
+  { cls: 'shadow-sm', label: 'sm', note: 'Subtle lift — inputs, chips' },
+  { cls: 'shadow-md', label: 'md', note: 'Resting card elevation' },
+  { cls: 'shadow-lg', label: 'lg', note: 'Default KCTE card' },
+  { cls: 'shadow-xl', label: 'xl', note: 'Hover / floating' },
+];
+
+const sampleIcons = [
+  { Icon: Calendar, name: 'Calendar' },
+  { Icon: Users, name: 'Users' },
+  { Icon: Code, name: 'Code' },
+  { Icon: Rocket, name: 'Rocket' },
+  { Icon: Sparkles, name: 'Sparkles' },
+  { Icon: MapPin, name: 'MapPin' },
+  { Icon: MessageCircle, name: 'MessageCircle' },
+  { Icon: Heart, name: 'Heart' },
+  { Icon: Zap, name: 'Zap' },
+  { Icon: Coffee, name: 'Coffee' },
+  { Icon: Lightbulb, name: 'Lightbulb' },
+  { Icon: Palette, name: 'Palette' },
+];
+
+const sectionCls = 'scroll-mt-24 border-t border-border pt-12 mt-12';
+const specimenCls = 'rounded-lg border border-border bg-card p-5';
+const labelCls = 'mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground';
+---
+
+<BaseLayout title="Brand & Design System" description="The living KCTE style guide — design tokens, typography, components, and brand assets, rendered live from the canonical CSS variables.">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+    <!-- ============ Header / intro ============ -->
+    <header id="top" class="scroll-mt-24">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div class="max-w-2xl">
+          <p class="mb-2 font-display text-sm font-semibold uppercase tracking-wider text-primary-600">
+            Brand &amp; Design System
+          </p>
+          <h1 class="font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+            Kansas City Tech Enthusiasts
+          </h1>
+          <p class="mt-4 text-lg text-muted-foreground">
+            A friendly, casual group connecting tech enthusiasts, developers, designers,
+            innovators, and curious minds. This is the canonical, living style guide —
+            every specimen renders from the live design tokens, so it can never drift.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {adjectives.map((adj) => (
+              <span class="rounded-full bg-primary-50 px-3 py-1 font-display text-sm font-semibold text-primary-700">
+                {adj}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="shrink-0">
+          <ThemeToggle client:load />
+        </div>
+      </div>
+
+      <!-- In-page nav -->
+      <nav aria-label="Style guide sections" class="mt-8 flex flex-wrap gap-2">
+        {navSections.map(([href, label]) => (
+          <a
+            href={href}
+            class="rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+
+    <!-- ============ #color ============ -->
+    <section id="color" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Color</h2>
+      <p class="mt-2 max-w-2xl text-muted-foreground">
+        Every chip below is read live from <code class="rounded bg-muted px-1 py-0.5 font-mono text-sm">globals.css</code>
+        via <code class="rounded bg-muted px-1 py-0.5 font-mono text-sm">getComputedStyle</code> — no hex is hardcoded here.
+        KCTE ships <strong>light-only</strong>; use the toggle (top-right) to preview the authored dark token set.
+      </p>
+      <div class="mt-6">
+        <TokenSwatches client:load />
+      </div>
+    </section>
+
+    <!-- ============ #typography ============ -->
+    <section id="typography" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Typography</h2>
+
+      <!-- Font roles -->
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <div class={specimenCls} data-brand-specimen="font-sans">
+          <p class={labelCls}>Sans · Inter · --font-sans</p>
+          <p class="font-sans text-2xl text-foreground">The quick brown fox</p>
+          <p class="mt-2 font-sans text-sm text-muted-foreground">
+            Sphinx of black quartz, judge my vow. Body copy, UI labels, controls.
+          </p>
+        </div>
+        <div class={specimenCls} data-brand-specimen="font-display">
+          <p class={labelCls}>Display · Poppins · --font-display</p>
+          <p class="font-display text-2xl font-bold text-foreground">The quick brown fox</p>
+          <p class="mt-2 font-display text-sm text-muted-foreground">
+            Pack my box with five dozen liquor jugs. Headings, eyebrows, tags.
+          </p>
+        </div>
+        <div class={specimenCls} data-brand-specimen="font-elegant">
+          <p class={labelCls}>Elegant · Playfair Display · --font-elegant</p>
+          <p class="font-elegant text-2xl text-foreground">The quick brown fox</p>
+          <p class="mt-2 font-elegant text-sm text-muted-foreground">
+            How vexingly quick daft zebras jump. Editorial accents, pull quotes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Type scale (headings use font-display) -->
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div class={specimenCls} data-brand-specimen="type-scale">
+          <p class={labelCls}>Heading scale (font-display)</p>
+          <div class="space-y-2">
+            <h1 class="font-display text-5xl font-extrabold tracking-tight text-foreground">Heading 1</h1>
+            <h2 class="font-display text-4xl font-bold tracking-tight text-foreground">Heading 2</h2>
+            <h3 class="font-display text-3xl font-bold text-foreground">Heading 3</h3>
+            <h4 class="font-display text-2xl font-semibold text-foreground">Heading 4</h4>
+            <h5 class="font-display text-xl font-semibold text-foreground">Heading 5</h5>
+            <h6 class="font-display text-lg font-semibold text-foreground">Heading 6</h6>
+          </div>
+        </div>
+
+        <div class={specimenCls} data-brand-specimen="text-elements">
+          <p class={labelCls}>Text elements</p>
+          <p class="text-lg text-muted-foreground">
+            Lead — a slightly larger intro paragraph that opens a section.
+          </p>
+          <p class="mt-3 text-base text-foreground">
+            Body — the default paragraph. It uses Inter at a comfortable measure with
+            relaxed line-height. Inline elements include a
+            <a href="/" class="font-medium text-primary-600 underline-offset-2 hover:underline">link</a>,
+            an <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">inline code</code> sample,
+            and <strong class="font-semibold">bold</strong> emphasis.
+          </p>
+          <p class="mt-2 text-sm text-muted-foreground">Small — captions, metadata, helper text.</p>
+          <blockquote class="mt-4 border-l-4 border-secondary pl-4 text-foreground italic">
+            “Community is built one conversation at a time.”
+          </blockquote>
+          <div class="mt-4 grid grid-cols-2 gap-4">
+            <ul class="list-disc space-y-1 pl-5 text-sm text-foreground">
+              <li>Unordered item one</li>
+              <li>Unordered item two</li>
+              <li>Unordered item three</li>
+            </ul>
+            <ol class="list-decimal space-y-1 pl-5 text-sm text-foreground">
+              <li>Ordered item one</li>
+              <li>Ordered item two</li>
+              <li>Ordered item three</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prose mapping -->
+      <div class="mt-8" data-brand-specimen="prose">
+        <p class={labelCls}>.prose block (proves the --tw-prose-* mapping)</p>
+        <div class="rounded-lg border border-border bg-card p-6">
+          <article class="prose max-w-none">
+            <h2>Long-form prose</h2>
+            <p>
+              This block is rendered with Tailwind Typography’s <code>.prose</code> class.
+              Its colors map onto the semantic tokens, so headings, body, links, and
+              borders all track the active theme — toggle dark and the prose follows.
+            </p>
+            <blockquote>A quote inside prose, bordered by the secondary token.</blockquote>
+            <ul>
+              <li>Bullets inherit the border token.</li>
+              <li>
+                Links use the <a href="/">primary token</a> for their color.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ #spacing ============ -->
+    <section id="spacing" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Spacing</h2>
+      <p class="mt-2 text-muted-foreground">The Tailwind spacing scale (used for gap, padding, and margin).</p>
+      <div class={`mt-6 ${specimenCls}`} data-brand-specimen="spacing-scale">
+        <div class="space-y-2.5">
+          {spacingSteps.map(({ step, rem }) => (
+            <div class="flex items-center gap-4">
+              <code class="w-10 shrink-0 font-mono text-xs text-muted-foreground">{step}</code>
+              <div class="h-4 rounded-sm bg-primary-500" style={`width:${rem}`}></div>
+              <span class="font-mono text-xs text-muted-foreground">{rem}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ #radius ============ -->
+    <section id="radius" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Radius</h2>
+      <p class="mt-2 text-muted-foreground">
+        Derived from the base <code class="rounded bg-muted px-1 py-0.5 font-mono text-sm">--radius</code> token.
+      </p>
+      <div class={`mt-6 ${specimenCls}`} data-brand-specimen="radius-scale">
+        <div class="flex flex-wrap gap-6">
+          {radii.map(({ cls, label }) => (
+            <div class="flex flex-col items-center gap-2">
+              <div class={`h-20 w-20 border-2 border-primary-500 bg-primary-100 ${cls}`}></div>
+              <code class="font-mono text-xs text-muted-foreground">{label}</code>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ #shadow ============ -->
+    <section id="shadow" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Shadow &amp; elevation</h2>
+      <div class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4" data-brand-specimen="shadow-scale">
+        {shadows.map(({ cls, label, note }) => (
+          <div class="flex flex-col items-center gap-3">
+            <div class={`flex h-24 w-full items-center justify-center rounded-xl bg-card ${cls}`}>
+              <code class="font-mono text-sm font-semibold text-foreground">{label}</code>
+            </div>
+            <span class="text-center text-xs text-muted-foreground">{note}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ============ #components ============ -->
+    <section id="components" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Components</h2>
+      <p class="mt-2 text-muted-foreground">Every KCTE component, with its variants and states.</p>
+
+      <!-- Buttons -->
+      <div class="mt-8">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Buttons</h3>
+        <div class="space-y-4">
+          {buttonVariants.map((variant) => (
+            <div
+              class={`flex flex-wrap items-center gap-3 rounded-lg border border-border p-4 ${lightOnDark.has(variant) ? 'bg-ink' : 'bg-card'}`}
+              data-brand-specimen="button"
+              data-variant={variant}
+            >
+              <code class={`w-28 shrink-0 font-mono text-xs ${lightOnDark.has(variant) ? 'text-white/70' : 'text-muted-foreground'}`}>{variant}</code>
+              {buttonSizes.map((size) => (
+                <Button variant={variant} size={size}>Button</Button>
+              ))}
+              <Button variant={variant} size="md" disabled>Disabled</Button>
+            </div>
+          ))}
+        </div>
+        <p class="mt-3 text-sm text-muted-foreground">
+          Focus: every button shows a 2px <code class="rounded bg-muted px-1 py-0.5 font-mono text-xs">ring-primary-500</code>
+          with offset on <code class="rounded bg-muted px-1 py-0.5 font-mono text-xs">:focus-visible</code> (tab to a button to preview).
+          <code class="rounded bg-muted px-1 py-0.5 font-mono text-xs">action</code> is reserved for the Meetup / “act now” CTA;
+          <code class="rounded bg-muted px-1 py-0.5 font-mono text-xs">*-light</code> variants are for dark / gradient backgrounds.
+        </p>
+      </div>
+
+      <!-- Tags -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Tags</h3>
+        <div class={specimenCls} data-brand-specimen="tag">
+          <div class="flex flex-wrap items-center gap-2">
+            {tagVariants.map((variant) => (
+              <Tag variant={variant}>{variant}</Tag>
+            ))}
+          </div>
+          <div class="mt-4 flex flex-wrap items-center gap-2">
+            <span class={labelCls + ' mb-0 mr-1 self-center'}>sm</span>
+            {tagVariants.map((variant) => (
+              <Tag variant={variant} size="sm">{variant}</Tag>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Status pills -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Status pills</h3>
+        <div class={specimenCls} data-brand-specimen="status-pill">
+          <div class="flex flex-wrap items-center gap-3">
+            {statusVariants.map((variant) => (
+              <StatusPill variant={variant}>{variant}</StatusPill>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Alerts</h3>
+        <div class="grid gap-4 md:grid-cols-2">
+          {alertVariants.map(({ variant, title, body }) => (
+            <div data-brand-specimen="alert" data-variant={variant}>
+              <Alert variant={variant} title={title}>{body}</Alert>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Avatars -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Avatars</h3>
+        <div class={specimenCls} data-brand-specimen="avatar">
+          <p class={labelCls}>Sizes (blue)</p>
+          <div class="flex flex-wrap items-end gap-4">
+            {avatarSizes.map((size) => (
+              <Avatar initials="KC" size={size} />
+            ))}
+          </div>
+          <p class={labelCls + ' mt-5'}>Variants</p>
+          <div class="flex flex-wrap items-center gap-4">
+            {avatarColors.map((variant) => (
+              <Avatar initials="KC" size="lg" variant={variant} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- AvatarStack -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Avatar stack</h3>
+        <div class={specimenCls} data-brand-specimen="avatar-stack">
+          <AvatarStack more={8}>
+            <Avatar initials="EH" size="sm" variant="blue" />
+            <Avatar initials="JD" size="sm" variant="pink" />
+            <Avatar initials="CW" size="sm" variant="ink" />
+            <Avatar initials="AL" size="sm" variant="blue" />
+          </AvatarStack>
+        </div>
+      </div>
+
+      <!-- PersonChip -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Person chip</h3>
+        <div class={specimenCls} data-brand-specimen="person-chip">
+          <div class="flex flex-wrap gap-8">
+            <PersonChip name="Evan Harmon" role="Organizer" initials="EH" variant="blue" />
+            <PersonChip name="Jordan Lee" role="Volunteer" initials="JL" variant="pink" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Card</h3>
+        <div data-brand-specimen="card" class="max-w-md">
+          <Card>
+            <div class="p-6">
+              <h4 class="font-display text-lg font-bold text-gray-900">Card title</h4>
+              <p class="mt-2 text-sm text-muted-foreground">
+                The base white card: rounded-xl, shadow-lg, faint border. Lifts to
+                shadow-xl on hover. Compose any content inside.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      <!-- EventCard -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Event card</h3>
+        <div data-brand-specimen="event-card" class="max-w-md">
+          <EventCard
+            day="24"
+            month="Jul"
+            title="React Patterns Workshop"
+            description="Hands-on session on composition, hooks, and state — bring a laptop."
+            tags={[{ label: 'Workshop', variant: 'workshop' }, { label: 'In person', variant: 'social' }]}
+            location="WeWork Crossroads"
+            time="6:00 PM"
+            going={42}
+            href="#"
+            rsvpHref="#"
+          />
+        </div>
+      </div>
+
+      <!-- ProjectCard (Lucide icon in the icon slot) -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Project card</h3>
+        <div data-brand-specimen="project-card" class="max-w-md">
+          <ProjectCard
+            title="KCTE Community Site"
+            description="The open-source website for the group — Astro, Tailwind, and Convex."
+            status="recruiting"
+            statusLabel="Recruiting"
+            tags={['Astro', 'TypeScript', 'Open source']}
+            meta="6 contributors"
+            href="#"
+            cta="Get involved"
+          >
+            <Code slot="icon" class="w-6 h-6" />
+          </ProjectCard>
+        </div>
+      </div>
+
+      <!-- SectionHead -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Section head</h3>
+        <div class={specimenCls} data-brand-specimen="section-head">
+          <SectionHead eyebrow="What we do" title="Build, learn, connect">
+            <p class="text-muted-foreground">
+              The eyebrow + title + sub-copy block that leads a content section.
+            </p>
+          </SectionHead>
+        </div>
+      </div>
+
+      <!-- Hero (shown small) -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">Hero</h3>
+        <div data-brand-specimen="hero" class="overflow-hidden rounded-xl border border-border">
+          <Hero eyebrow="Kansas City Tech Enthusiasts">
+            <h2 class="font-display text-3xl font-extrabold sm:text-4xl">Where KC tech connects</h2>
+            <p class="mx-auto mt-3 max-w-xl text-white/90">
+              Full-width animated gradient band. Heading, sub-copy, and actions go in the slot.
+            </p>
+            <div class="mt-5 flex justify-center gap-3">
+              <Button variant="action" size="md">Join the next event</Button>
+              <Button variant="outline-light" size="md">Learn more</Button>
+            </div>
+          </Hero>
+        </div>
+      </div>
+
+      <!-- CTABand (shown small) -->
+      <div class="mt-10">
+        <h3 class="mb-4 font-display text-xl font-bold text-foreground">CTA band</h3>
+        <div data-brand-specimen="cta-band" class="overflow-hidden rounded-xl border border-border">
+          <CTABand>
+            <h2 class="font-display text-2xl font-bold sm:text-3xl">Ready to join us?</h2>
+            <p class="mx-auto mt-2 max-w-md text-white/90">
+              A compact animated gradient call-to-action band for the foot of a page.
+            </p>
+            <div class="mt-5 flex justify-center">
+              <Button variant="action" size="md">Get started</Button>
+            </div>
+          </CTABand>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ #iconography ============ -->
+    <section id="iconography" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Iconography</h2>
+      <p class="mt-2 max-w-2xl text-muted-foreground">
+        KCTE uses <strong>Lucide</strong> (<code class="rounded bg-muted px-1 py-0.5 font-mono text-sm">@lucide/astro</code>)
+        with <strong>named imports only</strong> — one icon set, no mixing. Default size 24px, 2px stroke.
+      </p>
+      <div class={`mt-6 ${specimenCls}`} data-brand-specimen="iconography">
+        <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
+          {sampleIcons.map(({ Icon, name }) => (
+            <div class="flex flex-col items-center gap-2">
+              <Icon class="text-foreground" size={24} stroke-width={2} />
+              <code class="font-mono text-[11px] text-muted-foreground">{name}</code>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ #logo ============ -->
+    <section id="logo" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Logo</h2>
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        <div class={specimenCls} data-brand-specimen="logo-light">
+          <p class={labelCls}>On light</p>
+          <div class="flex items-center justify-center rounded-lg bg-white p-8">
+            <img src="/brand/kcte-logo-transparent.png" alt="KCTE logo" class="h-24 w-auto" />
+          </div>
+        </div>
+        <div class={specimenCls} data-brand-specimen="logo-dark">
+          <p class={labelCls}>On dark</p>
+          <div class="flex items-center justify-center rounded-lg bg-ink p-8">
+            <img src="/brand/kcte-logo-on-dark.png" alt="KCTE logo (reversed)" class="h-24 w-auto" />
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <Alert variant="warn" title="Logo usage">
+          Don’t stretch, recolor, or redraw the skyline-heart mark. Keep clear space
+          around the lockup, and always use the supplied transparent or on-dark asset
+          rather than re-creating it.
+        </Alert>
+      </div>
+    </section>
+
+    <!-- ============ #accessibility ============ -->
+    <section id="accessibility" class={sectionCls}>
+      <h2 class="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Accessibility</h2>
+      <div class={`mt-6 ${specimenCls}`}>
+        <ul class="space-y-3 text-foreground">
+          <li class="flex gap-3">
+            <Sparkles class="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
+            <span><strong>WCAG 2.2 AA</strong> is the target. Semantic role pairs (text-on-surface) are chosen to clear AA contrast — the color section above lets you verify any pairing live.</span>
+          </li>
+          <li class="flex gap-3">
+            <Zap class="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
+            <span><strong>Focus-visible rings.</strong> Interactive elements show a 2px primary ring with offset on keyboard focus; never remove the outline without a replacement.</span>
+          </li>
+          <li class="flex gap-3">
+            <Heart class="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
+            <span><strong>Reduced motion honored.</strong> The animated hero / CTA gradients freeze under <code class="rounded bg-muted px-1 py-0.5 font-mono text-sm">prefers-reduced-motion: reduce</code>.</span>
+          </li>
+          <li class="flex gap-3">
+            <Network class="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
+            <span><strong>Color is never the only signal.</strong> Status pills carry a label, alerts carry an icon + title, and links are underlined on hover.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

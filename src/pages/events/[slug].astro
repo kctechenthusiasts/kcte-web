@@ -1,0 +1,254 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/kcte/Tag.astro';
+import Alert from '../../components/kcte/Alert.astro';
+import Avatar from '../../components/kcte/Avatar.astro';
+import AvatarStack from '../../components/kcte/AvatarStack.astro';
+import PersonChip from '../../components/kcte/PersonChip.astro';
+import Button from '../../components/kcte/Button.astro';
+import { events } from '../../data/events';
+import { siteConfig } from '../../config/site';
+import { ChevronRight, MapPin, Check, ArrowUpRight } from '@lucide/astro';
+
+export function getStaticPaths() {
+  return events.map((event) => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+
+// Decorative "going" avatars (initials + colors are illustrative, no real identities).
+const goingAvatars = [
+  { initials: 'EH', variant: 'blue' as const },
+  { initials: 'JS', variant: 'pink' as const },
+  { initials: 'CR', variant: 'ink' as const },
+  { initials: 'AM', variant: 'blue' as const },
+];
+const moreGoing = event.going - goingAvatars.length;
+---
+
+<BaseLayout title={event.title} description={event.lead}>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Sample-template notice -->
+    <div class="pt-6">
+      <Alert variant="info" title="Sample event">
+        <p>
+          This is a representative template. KCTE's real events live on
+          <a
+            href={siteConfig.links.meetup}
+            target="_blank"
+            rel="noopener"
+            class="underline underline-offset-2 hover:text-primary-600">Meetup</a
+          > — use the RSVP button to find the live listing.
+        </p>
+      </Alert>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-sm text-muted-foreground pt-6" aria-label="Breadcrumb">
+      <a href="/events" class="hover:text-primary-600 transition-colors">Events</a>
+      <ChevronRight class="w-3.5 h-3.5 opacity-60 shrink-0" />
+      <span class="text-gray-700">{event.title}</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-4 pb-2">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {event.tags.map((t) => <Tag variant={t.variant}>{t.label}</Tag>)}
+      </div>
+      <h1
+        class="font-display font-bold text-4xl sm:text-5xl leading-[1.1] tracking-tight text-gray-900 m-0 max-w-3xl"
+      >
+        {event.title}
+      </h1>
+    </header>
+
+    <!-- Two-column grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-11 items-start pt-9 pb-16">
+      <!-- Main -->
+      <div>
+        <p class="text-[19px] leading-relaxed text-gray-700 mb-7">{event.lead}</p>
+
+        {
+          event.free && (
+            <Alert variant="info" title="First 12 RSVPs get a free board" class="mb-2">
+              <p>
+                We supply the hardware — it's yours to keep. Just bring a laptop and a USB-C data
+                cable.
+              </p>
+            </Alert>
+          )
+        }
+
+        <h2 class="font-display font-bold text-[22px] text-gray-900 mt-9 mb-3.5">Agenda</h2>
+        <ul class="list-none m-0 p-0 flex flex-col">
+          {
+            event.agenda.map((item) => (
+              <li class="flex gap-[18px] py-3.5 border-b border-gray-100 last:border-b-0">
+                <span class="shrink-0 w-[84px] font-display font-bold text-sm text-primary-600">
+                  {item.time}
+                </span>
+                <span class="min-w-0">
+                  <b class="block font-semibold text-gray-900 text-[15px] mb-0.5">{item.title}</b>
+                  <span class="text-sm text-muted-foreground">{item.detail}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="font-display font-bold text-[22px] text-gray-900 mt-9 mb-3.5">What to bring</h2>
+        <ul class="list-none m-0 p-0 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+          {
+            event.bring.map((thing) => (
+              <li class="flex items-center gap-2.5 text-[15px] text-gray-700">
+                <Check class="w-[18px] h-[18px] text-success-foreground shrink-0" />
+                {thing}
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="font-display font-bold text-[22px] text-gray-900 mt-9 mb-3.5">Where</h2>
+        <div class="ed-map">
+          <div class="ed-map__grid"></div>
+          <svg
+            class="ed-map__roads"
+            viewBox="0 0 100 56"
+            preserveAspectRatio="none"
+            fill="none"
+            stroke="rgba(119,192,231,.25)"
+            stroke-width="1.5"
+          >
+            <path d="M0 34 H100 M0 18 H100 M30 0 V56 M66 0 V56"></path>
+          </svg>
+          <span class="ed-pin">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"
+              ></path>
+            </svg>
+          </span>
+          <span class="ed-map__label">map · {event.venue}</span>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:sticky lg:top-24 flex flex-col gap-4">
+        <div class="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
+          <!-- Date block -->
+          <div class="flex gap-3.5 items-center mb-[18px]">
+            <div
+              class="shrink-0 w-[62px] h-[62px] rounded-lg bg-primary-50 flex flex-col items-center justify-center leading-none"
+            >
+              <span class="font-display font-extrabold text-2xl text-primary-600">{event.day}</span>
+              <span class="text-[11px] font-bold tracking-widest uppercase text-primary-500 mt-0.5"
+                >{event.month}</span
+              >
+            </div>
+            <div>
+              <b class="block font-display font-bold text-base text-gray-900">{event.dateLabel}</b>
+              <span class="text-sm text-muted-foreground">{event.timeLabel}</span>
+            </div>
+          </div>
+
+          <!-- Venue / address rows -->
+          <div class="flex flex-col gap-3 my-[18px] text-sm text-gray-700">
+            <div class="flex gap-2.5 items-start">
+              <MapPin class="w-[17px] h-[17px] text-primary-500 shrink-0 mt-px" />
+              <span>
+                <b class="text-gray-900">{event.venue}</b><br />{event.address}
+              </span>
+            </div>
+            {
+              event.free && (
+                <div class="flex gap-2.5 items-start">
+                  <Check class="w-[17px] h-[17px] text-primary-500 shrink-0 mt-px" />
+                  <span>Free · all skill levels welcome</span>
+                </div>
+              )
+            }
+          </div>
+
+          <!-- RSVP CTA -->
+          <Button
+            variant="action"
+            size="lg"
+            href={siteConfig.links.meetup}
+            target="_blank"
+            rel="noopener"
+            block
+          >
+            RSVP on Meetup
+            <ArrowUpRight class="w-[18px] h-[18px]" />
+          </Button>
+          <p class="text-xs text-muted-foreground text-center mt-2.5">
+            Headcount &amp; reminders handled by Meetup
+          </p>
+
+          <!-- Going row -->
+          <div class="flex items-center gap-3 pt-4 border-t border-gray-100 mt-1">
+            <AvatarStack more={moreGoing > 0 ? moreGoing : undefined}>
+              {goingAvatars.map((a) => <Avatar size="sm" initials={a.initials} variant={a.variant} />)}
+            </AvatarStack>
+            <span class="text-sm text-muted-foreground">{event.going} going</span>
+          </div>
+        </div>
+
+        <!-- Host card -->
+        <div class="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
+          <p
+            class="text-xs font-bold tracking-wider uppercase text-muted-foreground m-0 mb-3.5"
+          >
+            Hosted by
+          </p>
+          <PersonChip name={event.host.name} role={event.host.role} initials={event.host.initials} />
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Decorative "where" map — dark grid + street lines + pin (ported from the
+     design handoff mockup; not a real map). Kept in a scoped <style> block. */
+  .ed-map {
+    height: 200px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+    background: #0d1b2a;
+    margin-top: 6px;
+  }
+  .ed-map__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .ed-map__roads {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .ed-pin {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -100%);
+    color: var(--color-action);
+  }
+  .ed-map__label {
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+</style>

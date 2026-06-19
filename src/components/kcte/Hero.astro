@@ -1,0 +1,26 @@
+---
+/** Full-width animated gradient hero band. Put the heading/sub/actions in the slot. */
+interface Props {
+  eyebrow?: string;
+  class?: string;
+}
+const { eyebrow, class: className = '' } = Astro.props;
+---
+
+<section
+  class={[
+    'relative overflow-hidden text-white kcte-hero-gradient bg-gradient-to-br from-primary-700 via-primary-400 to-secondary-400',
+    className,
+  ].filter(Boolean).join(' ')}
+>
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 text-center">
+    {
+      eyebrow && (
+        <p class="font-display font-semibold text-sm tracking-[0.12em] uppercase text-white/85 mb-3.5">
+          {eyebrow}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</section>

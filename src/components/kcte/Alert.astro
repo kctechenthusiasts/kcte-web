@@ -1,0 +1,31 @@
+---
+import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro';
+/** Callout / alert. */
+interface Props {
+  variant?: 'info' | 'success' | 'warn' | 'error';
+  title?: string;
+  class?: string;
+}
+const { variant = 'info', title, class: className = '' } = Astro.props;
+
+const styles = {
+  info: { box: 'bg-info text-info-foreground border-primary-200', icon: 'text-primary-600', Icon: Info },
+  success: { box: 'bg-success text-success-foreground border-green-300', icon: 'text-success-foreground', Icon: CircleCheck },
+  warn: { box: 'bg-warning text-warning-foreground border-orange-200', icon: 'text-orange-700', Icon: TriangleAlert },
+  error: { box: 'bg-error text-error-foreground border-red-300', icon: 'text-error-foreground', Icon: CircleAlert },
+} as const;
+const s = styles[variant];
+const Icon = s.Icon;
+---
+
+<div
+  class={['flex gap-3.5 p-4 rounded-lg border text-[15px] leading-relaxed', s.box, className]
+    .filter(Boolean)
+    .join(' ')}
+>
+  <Icon class={`w-[22px] h-[22px] shrink-0 mt-0.5 ${s.icon}`} />
+  <div>
+    {title && <p class="font-display font-bold mb-0.5">{title}</p>}
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PersonChip from '../../components/kcte/PersonChip.astro';
+import Avatar from '../../components/kcte/Avatar.astro';
+import CTABand from '../../components/kcte/CTABand.astro';
+import Button from '../../components/kcte/Button.astro';
+import { getAuthor } from '../../data/authors';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const author = getAuthor(post.data.author);
+
+const fmtFull = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+const bylineRole = [author.role, fmtFull(post.data.date), post.data.readingTime]
+  .filter(Boolean)
+  .join(' · ');
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt}>
+  <article>
+    <!-- Head -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-9 text-center">
+      {
+        post.data.kicker && (
+          <p class="font-display font-semibold text-[13px] tracking-[0.1em] uppercase text-primary-600 mb-3.5">
+            {post.data.kicker}
+          </p>
+        )
+      }
+      <h1 class="font-display font-bold text-4xl sm:text-5xl leading-tight tracking-tight text-gray-900 max-w-3xl mx-auto mb-6">
+        {post.data.title}
+      </h1>
+      <div class="flex items-center justify-center">
+        <PersonChip
+          name={author.name}
+          role={bylineRole}
+          initials={author.initials}
+          variant={author.variant}
+        />
+      </div>
+    </div>
+
+    <!-- Hero image placeholder -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        class="relative h-[clamp(260px,40vw,460px)] rounded-2xl overflow-hidden bg-gradient-to-br from-primary-700 to-secondary-500 shadow-xl flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:26px_26px]"
+        >
+        </div>
+        <span
+          class="relative font-mono text-xs tracking-wide text-white/80 bg-white/10 ring-1 ring-inset ring-white/20 px-3 py-1.5 rounded-md"
+          >cover · KC Meshtastic network</span
+        >
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-2">
+      <div class="prose prose-lg max-w-3xl mx-auto">
+        <Content />
+      </div>
+
+      <!-- Author bio foot -->
+      <div class="max-w-3xl mx-auto">
+        <div
+          class="flex gap-4 items-start bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 mt-11"
+        >
+          <Avatar initials={author.initials} alt={author.name} size="lg" variant={author.variant} />
+          <div>
+            <p class="font-display font-semibold text-[17px] text-gray-900">{author.name}</p>
+            {author.bio && <p class="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">{author.bio}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <CTABand class="mt-13">
+    <h2 class="font-display font-bold text-3xl sm:text-4xl mb-4">Got a build log to share?</h2>
+    <p class="text-lg text-white/90 mb-8">
+      Members write everything on this blog. If you built something — or learned something the hard way — we'd love to publish it.
+    </p>
+    <Button href="/contact" variant="action" size="lg">Pitch a post</Button>
+  </CTABand>
+</BaseLayout>

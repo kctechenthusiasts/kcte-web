@@ -1,0 +1,18 @@
+---
+/** White card: rounded-xl, shadow-lg, faint border; lifts to shadow-xl on hover. */
+interface Props {
+  hover?: boolean;
+  class?: string;
+}
+const { hover = true, class: className = '' } = Astro.props;
+---
+
+<div
+  class={[
+    'bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden',
+    hover && 'transition-shadow hover:shadow-xl',
+    className,
+  ].filter(Boolean).join(' ')}
+>
+  <slot />
+</div>

@@ -1,6 +1,8 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
+
 interface Props {
-  type?: string;
+  type?: HTMLAttributes<'input'>['type'];
   name?: string;
   id?: string;
   placeholder?: string;
