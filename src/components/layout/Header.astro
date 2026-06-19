@@ -4,11 +4,11 @@ import { siteConfig } from '../../config/site';
 
 const path = Astro.url.pathname;
 // "Home" is intentionally omitted — the logo + wordmark link home.
+// /projects and /blog still build and are reachable by URL, but are intentionally
+// omitted from the nav until that content is ready to surface.
 const nav = [
   { href: '/about', label: 'About' },
   { href: '/events', label: 'Events' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
   { href: '/topics', label: 'Topics' },
   { href: '/contact', label: 'Contact' },
 ];

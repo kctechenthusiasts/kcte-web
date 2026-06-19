@@ -1,11 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
-import EventCard from '../components/kcte/EventCard.astro';
-import { events } from '../data/events';
-import { siteConfig } from '../config/site';
-
-const featured = events[0];
+// Note: the EventCard component, the /events/[slug] detail template, and src/data/events.ts
+// are kept in the codebase for a future native events build, but are not surfaced here yet.
+// This page intentionally shows only the live Meetup embed.
 ---
 
 <BaseLayout title="Events">
@@ -19,30 +17,6 @@ const featured = events[0];
         <p class="text-xl sm:text-2xl text-primary-100">
           Join us for workshops, talks, hack nights, and more
         </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured / Next up -->
-  <section class="py-12 sm:py-16 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-gray-900 mb-2">Featured / Next up</h2>
-        <p class="text-muted-foreground mb-6">
-          A preview of what a KCTE event looks like — the full live calendar is the Meetup embed below.
-        </p>
-        <EventCard
-          day={featured.day}
-          month={featured.month}
-          title={featured.title}
-          description={featured.lead}
-          tags={featured.tags}
-          location={featured.venue}
-          time={featured.timeLabel}
-          going={featured.going}
-          href={`/events/${featured.slug}`}
-          rsvpHref={siteConfig.links.meetup}
-        />
       </div>
     </div>
   </section>
