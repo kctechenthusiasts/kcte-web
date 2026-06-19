@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/ui/Card.astro';
+import { Users, Handshake, TrendingUp, Lightbulb } from '@lucide/astro';
 
 const stats = [
   { label: 'Members', value: '500+' },
@@ -13,22 +14,30 @@ const values = [
   {
     title: 'Inclusivity',
     description: 'We welcome everyone regardless of background, experience level, or expertise. Our community thrives on diversity.',
-    icon: '👥',
+    Icon: Users,
+    wrap: 'bg-primary-100',
+    tint: 'text-primary-600',
   },
   {
     title: 'Collaboration',
     description: 'We believe in working together to solve problems, share knowledge, and build amazing things.',
-    icon: '🤝',
+    Icon: Handshake,
+    wrap: 'bg-secondary-100',
+    tint: 'text-secondary-600',
   },
   {
     title: 'Growth',
     description: 'We support continuous learning and personal development through workshops, talks, and hands-on projects.',
-    icon: '📈',
+    Icon: TrendingUp,
+    wrap: 'bg-primary-100',
+    tint: 'text-primary-600',
   },
   {
     title: 'Innovation',
     description: 'We encourage experimentation, creativity, and pushing the boundaries of what\'s possible with technology.',
-    icon: '💡',
+    Icon: Lightbulb,
+    wrap: 'bg-secondary-100',
+    tint: 'text-secondary-600',
   },
 ];
 ---
@@ -101,13 +110,18 @@ const values = [
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {values.map((value) => (
-          <Card class="p-6 hover:shadow-xl transition-shadow">
-            <div class="text-4xl mb-4">{value.icon}</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
-            <p class="text-gray-600">{value.description}</p>
-          </Card>
-        ))}
+        {values.map((value) => {
+          const Icon = value.Icon;
+          return (
+            <Card class="p-6 hover:shadow-xl transition-shadow">
+              <div class={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${value.wrap}`}>
+                <Icon class={`w-6 h-6 ${value.tint}`} />
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
+              <p class="text-gray-600">{value.description}</p>
+            </Card>
+          );
+        })}
       </div>
     </div>
   </section>

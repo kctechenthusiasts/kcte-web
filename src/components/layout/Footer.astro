@@ -6,11 +6,13 @@ import { siteConfig } from '../../config/site';
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="col-span-1 md:col-span-2">
-        <img src="/brand/kcte-logo-on-dark.png" alt={siteConfig.name} class="h-16 w-auto mb-4" />
-        <p class="text-gray-400 mb-4 max-w-md">
-          {siteConfig.description}
-        </p>
-        <div class="flex space-x-4">
+        <div class="flex items-start gap-4">
+          <img src="/brand/kcte-logo-on-dark.png" alt={siteConfig.name} class="h-16 w-auto shrink-0" />
+          <div>
+            <p class="text-gray-400 max-w-md mb-4">
+              {siteConfig.description}
+            </p>
+            <div class="flex space-x-4">
           <button id="signal-btn-footer" class="text-gray-400 hover:text-primary-400 transition-colors cursor-pointer">
             <span class="sr-only">Signal</span>
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -41,9 +43,11 @@ import { siteConfig } from '../../config/site';
               </svg>
             </a>
           )}
+            </div>
+          </div>
         </div>
       </div>
-      
+
       <div>
         <h4 class="text-white font-semibold mb-4">Quick Links</h4>
         <ul class="space-y-2">
