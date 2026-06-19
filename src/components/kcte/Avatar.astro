@@ -1,0 +1,40 @@
+---
+/** Circular initials (or photo) avatar. */
+interface Props {
+  initials?: string;
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'blue' | 'pink' | 'ink';
+  class?: string;
+}
+const { initials = '', src, alt = '', size = 'md', variant = 'blue', class: className = '' } = Astro.props;
+
+const sizes: Record<string, string> = {
+  sm: 'w-8 h-8 text-[13px]',
+  md: 'w-11 h-11 text-base',
+  lg: 'w-16 h-16 text-[22px]',
+  xl: 'w-24 h-24 text-[32px]',
+};
+const variants: Record<string, string> = {
+  blue: 'bg-primary-500',
+  pink: 'bg-secondary-500',
+  ink: 'bg-ink',
+};
+const cls = [
+  'inline-flex items-center justify-center shrink-0 rounded-full overflow-hidden font-display font-bold text-white shadow-[inset_0_0_0_2px_rgba(255,255,255,0.35)]',
+  sizes[size],
+  variants[variant],
+  className,
+].filter(Boolean).join(' ');
+---
+
+{
+  src ? (
+    <span class={cls}>
+      <img src={src} alt={alt} class="w-full h-full object-cover" />
+    </span>
+  ) : (
+    <span class={cls} aria-hidden={!alt}>{initials}</span>
+  )
+}

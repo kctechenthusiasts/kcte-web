@@ -1,0 +1,18 @@
+---
+/** Animated gradient call-to-action band. Heading/body/actions go in the slot. */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<section
+  class={[
+    'text-white kcte-hero-gradient bg-gradient-to-br from-primary-700 via-primary-400 to-secondary-400 py-16 sm:py-24',
+    className,
+  ].filter(Boolean).join(' ')}
+>
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+    <slot />
+  </div>
+</section>

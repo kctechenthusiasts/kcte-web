@@ -29,7 +29,7 @@ import { siteConfig } from '../config/site';
         <h2 class="text-3xl font-bold text-gray-900 mb-6 font-display">
           Send us a Message
         </h2>
-        <form id="contact-form" name="contact" method="POST" netlify netlify-honeypot="bot-field" class="space-y-6">
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="space-y-6">
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden">
             <label>Don't fill this out if you're human: <input name="bot-field" /></label>

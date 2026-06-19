@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/kcte/Hero.astro';
+import Tag from '../../components/kcte/Tag.astro';
+import PersonChip from '../../components/kcte/PersonChip.astro';
+import Button from '../../components/kcte/Button.astro';
+import SectionHead from '../../components/kcte/SectionHead.astro';
+import { getAuthor } from '../../data/authors';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p.id !== featured.id);
+
+// Map a tag label to a Tag component variant.
+const tagVariant = (tag: string): 'workshop' | 'talk' | 'hacknight' | 'social' | 'ghost' => {
+  switch (tag.toLowerCase()) {
+    case 'recap':
+    case 'deep dive':
+      return 'talk';
+    case 'homelab':
+    case 'tutorial':
+      return 'workshop';
+    case 'community':
+      return 'social';
+    case 'hack night':
+      return 'hacknight';
+    default:
+      return 'ghost';
+  }
+};
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+const fmtFull = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+const featAuthor = getAuthor(featured.data.author);
+---
+
+<BaseLayout title="Blog">
+  <Hero eyebrow="Field notes from KC">
+    <h1 class="font-display font-bold text-4xl sm:text-5xl md:text-6xl mb-5">The KCTE Blog</h1>
+    <p class="text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto">
+      Build logs, event recaps, and how-tos from the community — written by members, for members.
+    </p>
+  </Hero>
+
+  <section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Featured post -->
+      <article
+        class="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] rounded-2xl overflow-hidden border border-gray-200 shadow-xl bg-white mb-14"
+      >
+        <div
+          class="relative min-h-[260px] lg:min-h-[340px] bg-gradient-to-br from-primary-700 to-secondary-500 flex items-center justify-center"
+        >
+          <span
+            class="font-mono text-xs tracking-wide text-white/85 bg-white/10 ring-1 ring-inset ring-white/20 px-3 py-1.5 rounded-md"
+            >featured image · 1200×800</span
+          >
+        </div>
+        <div class="p-8 sm:p-10 flex flex-col justify-center">
+          {
+            featured.data.kicker && (
+              <p class="font-display font-semibold text-[13px] tracking-[0.1em] uppercase text-primary-600 mb-3">
+                {featured.data.kicker}
+              </p>
+            )
+          }
+          <h2 class="font-display font-bold text-2xl sm:text-3xl leading-tight tracking-tight text-gray-900 mb-4">
+            <a href={`/blog/${featured.id}`} class="hover:text-primary-600 transition-colors">
+              {featured.data.title}
+            </a>
+          </h2>
+          <p class="text-lg leading-relaxed text-muted-foreground mb-6">{featured.data.excerpt}</p>
+          <div class="flex gap-2 flex-wrap mb-6">
+            {featured.data.tags.map((tag) => <Tag variant={tagVariant(tag)}>{tag}</Tag>)}
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <PersonChip
+              name={featAuthor.name}
+              role={`${fmtDate(featured.data.date)} · ${featured.data.readingTime ?? ''}`.replace(/ · $/, '')}
+              initials={featAuthor.initials}
+              variant={featAuthor.variant}
+              avatarSize="sm"
+            />
+            <Button href={`/blog/${featured.id}`} variant="outline" size="sm">Read</Button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+        {
+          rest.map((post) => {
+            const author = getAuthor(post.data.author);
+            return (
+              <article class="flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                <a
+                  href={`/blog/${post.id}`}
+                  class="relative h-44 flex items-center justify-center bg-gray-100 [background-image:repeating-linear-gradient(45deg,var(--color-gray-100),var(--color-gray-100)_10px,var(--color-gray-50)_10px,var(--color-gray-50)_20px)]"
+                >
+                  <span class="font-mono text-xs tracking-wide text-gray-500 bg-white/70 px-2.5 py-1 rounded-md">
+                    cover · 800×450
+                  </span>
+                </a>
+                <div class="p-5 pb-6 flex flex-col flex-1">
+                  <div class="flex gap-1.5 flex-wrap mb-3">
+                    {post.data.tags.map((tag, i) => (
+                      <Tag variant={i === 0 ? tagVariant(tag) : 'ghost'} size={i === 0 ? 'md' : 'sm'}>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </div>
+                  <h3 class="font-display font-bold text-lg leading-snug text-gray-900 mb-2.5">
+                    <a href={`/blog/${post.id}`} class="hover:text-primary-600 transition-colors">
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  <p class="text-sm leading-relaxed text-muted-foreground mb-4 flex-1">
+                    {post.data.excerpt}
+                  </p>
+                  <div class="flex items-center justify-between gap-3 mt-auto">
+                    <PersonChip
+                      name={author.name}
+                      initials={author.initials}
+                      variant={author.variant}
+                      avatarSize="sm"
+                    />
+                    <span class="text-xs text-muted-foreground shrink-0">{fmtDate(post.data.date)}</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHead eyebrow="The KCTE Monthly" title="Get the best of the blog in your inbox" center>
+        <p class="text-lg text-muted-foreground max-w-xl mx-auto mb-7">
+          One email a month: upcoming events, new posts, and project updates. No spam, unsubscribe anytime.
+        </p>
+        <form
+          class="flex gap-3 max-w-md mx-auto flex-wrap"
+          onsubmit="return false"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="you@email.com"
+            class="flex-1 min-w-[200px] h-[50px] px-4 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          />
+          <Button variant="action" type="submit">Subscribe</Button>
+        </form>
+      </SectionHead>
+    </div>
+  </section>
+</BaseLayout>

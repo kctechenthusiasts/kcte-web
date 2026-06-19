@@ -1,0 +1,29 @@
+---
+/** Event-type / category tag. */
+interface Props {
+  variant?: 'workshop' | 'talk' | 'hacknight' | 'social' | 'online' | 'solid' | 'ghost';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+const { variant = 'workshop', size = 'md', class: className = '' } = Astro.props;
+
+const base =
+  'inline-flex items-center gap-1 font-display font-semibold uppercase tracking-wide rounded-full leading-none whitespace-nowrap';
+const variants: Record<string, string> = {
+  workshop: 'bg-primary-100 text-primary-700',
+  talk: 'bg-secondary-100 text-secondary-700',
+  hacknight: 'bg-gray-800 text-white',
+  social: 'bg-success text-success-foreground',
+  online: 'bg-gray-100 text-gray-700',
+  solid: 'bg-primary-600 text-white',
+  ghost: 'bg-transparent text-muted-foreground ring-1 ring-inset ring-border',
+};
+const sizes: Record<string, string> = {
+  md: 'text-xs px-2.5 py-1',
+  sm: 'text-[0.68rem] px-2 py-1',
+};
+---
+
+<span class={[base, variants[variant], sizes[size], className].filter(Boolean).join(' ')}>
+  <slot />
+</span>

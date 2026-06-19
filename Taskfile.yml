@@ -1,0 +1,69 @@
+# Taskfile.yml — go-task / https://taskfile.dev
+# Gate runner for the KCTE site. Design-system tasks (lint:design, ingest:design,
+# verify:browsers) come from the design-handoff skill; dev/check/build/verify wrap pnpm.
+
+version: "3"
+
+vars:
+  GLOBALS: src/styles/globals.css
+  CONTRAST_SCRIPT: scripts/check-contrast.mjs
+
+tasks:
+  default:
+    cmds:
+      - task --list
+    silent: true
+
+  dev:
+    desc: Start the Astro dev server (http://localhost:4321)
+    cmds:
+      - pnpm dev
+
+  build:
+    desc: Production build to dist/
+    cmds:
+      - pnpm build
+
+  preview:
+    desc: Preview the production build locally
+    cmds:
+      - pnpm preview
+
+  check:
+    desc: Typecheck (astro check)
+    cmds:
+      - pnpm check
+
+  lint:design:
+    desc: Static design gate — WCAG-AA token contrast (both themes) + off-palette scan
+    cmds:
+      # 1. Static contrast: parses globals.css, fails on any sub-AA text pair in :root or .dark.
+      - node {{.CONTRAST_SCRIPT}} {{.GLOBALS}}
+      # 2. Off-palette guard: components must style with semantic tokens, never arbitrary color
+      #    literals. `! grep` => the task fails when a match is found, passes when there are none.
+      - >-
+        ! grep -rEn --include=*.ts --include=*.tsx --include=*.jsx --include=*.astro
+        '(bg|text|border|fill|stroke|ring|from|via|to|outline|decoration|accent|caret|shadow)-\[(#|rgb|oklch|hsl)'
+        src 2>/dev/null
+
+  ingest:design:
+    desc: Decompress a Claude Design handoff archive into docs/design/
+    vars:
+      DEST: '{{.DEST | default "docs/design"}}'
+    requires:
+      vars: [BUNDLE]
+    cmds:
+      - mkdir -p {{.DEST}}
+      - tar -xzf {{.BUNDLE}} -C {{.DEST}} 2>/dev/null || unzip -o {{.BUNDLE}} -d {{.DEST}}
+
+  verify:browsers:
+    desc: Cross-browser/viewport screenshot sweep (Playwright — Chromium/Firefox/WebKit × devices)
+    cmds:
+      - pnpm exec playwright test {{.CLI_ARGS}}
+
+  verify:
+    desc: Full verification pass — typecheck, static design gate, then build
+    cmds:
+      - task: check
+      - task: lint:design
+      - task: build

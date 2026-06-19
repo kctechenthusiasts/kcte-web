@@ -1,0 +1,67 @@
+---
+import Tag from './Tag.astro';
+import Button from './Button.astro';
+import { MapPin, Clock } from '@lucide/astro';
+
+interface Props {
+  day: string;
+  month: string;
+  title: string;
+  description?: string;
+  tags?: { label: string; variant?: 'workshop' | 'talk' | 'hacknight' | 'social' | 'online' | 'ghost' }[];
+  location?: string;
+  time?: string;
+  going?: number;
+  href?: string;
+  rsvpHref?: string;
+  class?: string;
+}
+const { day, month, title, description, tags = [], location, time, going, href, rsvpHref, class: className = '' } = Astro.props;
+---
+
+<article
+  class={['flex flex-col bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-shadow hover:shadow-xl', className]
+    .filter(Boolean)
+    .join(' ')}
+>
+  <div class="flex gap-4 px-6 pt-5">
+    <div class="shrink-0 w-16 h-16 rounded-xl bg-primary-50 flex flex-col items-center justify-center leading-none">
+      <span class="font-display font-extrabold text-2xl text-primary-600">{day}</span>
+      <span class="text-[11px] font-bold tracking-widest uppercase text-primary-500 mt-0.5">{month}</span>
+    </div>
+    <div class="flex-1 min-w-0">
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5 mb-2.5">
+          {tags.map((t) => <Tag variant={t.variant}>{t.label}</Tag>)}
+        </div>
+      )}
+      <h3 class="font-display font-bold text-[19px] leading-snug text-gray-900 m-0">
+        {href ? <a href={href} class="hover:text-primary-600 transition-colors">{title}</a> : title}
+      </h3>
+    </div>
+  </div>
+
+  {description && (
+    <div class="px-6 pt-3.5">
+      <p class="text-sm leading-relaxed text-muted-foreground m-0">{description}</p>
+    </div>
+  )}
+
+  {(location || time) && (
+    <div class="flex flex-wrap gap-x-4 gap-y-2 px-6 py-4 text-[13px] text-muted-foreground">
+      {time && (
+        <span class="inline-flex items-center gap-1.5"><Clock class="w-[15px] h-[15px] text-primary-500 shrink-0" />{time}</span>
+      )}
+      {location && (
+        <span class="inline-flex items-center gap-1.5"><MapPin class="w-[15px] h-[15px] text-primary-500 shrink-0" />{location}</span>
+      )}
+    </div>
+  )}
+
+  {(going != null || rsvpHref) && (
+    <div class="flex items-center justify-between gap-4 px-6 py-4 border-t border-gray-100 bg-gray-50 mt-auto">
+      {going != null ? <span class="text-[13px] text-muted-foreground">{going} going</span> : <span></span>}
+      {rsvpHref && <Button href={rsvpHref} variant="action" size="sm" target="_blank" rel="noopener">RSVP</Button>}
+    </div>
+  )}
+</article>

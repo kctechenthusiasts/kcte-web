@@ -8,5 +8,6 @@ export const siteConfig = {
     github: 'https://github.com/kctechenthusiasts',
     linkedin: 'https://linkedin.com/company/kctechenthusiasts',
     discord: 'https://discord.gg/PChH4WVHQP',
+    meetup: 'https://www.meetup.com/kctechenthusiasts/',
   },
 };

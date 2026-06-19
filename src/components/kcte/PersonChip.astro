@@ -1,0 +1,22 @@
+---
+import Avatar from './Avatar.astro';
+/** Avatar + name/role chip. */
+interface Props {
+  name: string;
+  role?: string;
+  initials?: string;
+  src?: string;
+  avatarSize?: 'sm' | 'md' | 'lg';
+  variant?: 'blue' | 'pink' | 'ink';
+  class?: string;
+}
+const { name, role, initials, src, avatarSize = 'md', variant = 'blue', class: className = '' } = Astro.props;
+---
+
+<span class={['inline-flex items-center gap-3 min-w-0', className].filter(Boolean).join(' ')}>
+  <Avatar initials={initials} src={src} alt={name} size={avatarSize} variant={variant} />
+  <span class="flex flex-col min-w-0">
+    <span class="font-display font-semibold text-[15px] text-gray-900 leading-tight">{name}</span>
+    {role && <span class="text-[13px] text-muted-foreground leading-snug">{role}</span>}
+  </span>
+</span>

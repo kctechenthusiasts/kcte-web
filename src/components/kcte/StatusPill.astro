@@ -1,0 +1,25 @@
+---
+/** Community-project status pill (with a leading dot). */
+interface Props {
+  variant?: 'active' | 'recruiting' | 'idea' | 'live';
+  class?: string;
+}
+const { variant = 'active', class: className = '' } = Astro.props;
+const variants: Record<string, string> = {
+  active: 'bg-success text-success-foreground',
+  recruiting: 'bg-primary-100 text-primary-700',
+  idea: 'bg-gray-100 text-gray-600',
+  live: 'bg-secondary-100 text-secondary-700',
+};
+---
+
+<span
+  class={[
+    'inline-flex items-center gap-1.5 font-display font-bold uppercase tracking-wide text-xs px-2.5 py-1 rounded-full',
+    variants[variant],
+    className,
+  ].filter(Boolean).join(' ')}
+>
+  <span class="w-[7px] h-[7px] rounded-full bg-current"></span>
+  <slot />
+</span>

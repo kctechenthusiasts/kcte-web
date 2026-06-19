@@ -1,0 +1,24 @@
+---
+/** Overlapping avatar row (e.g. "12 going"). Place <Avatar> children in the slot. */
+interface Props {
+  more?: number;
+  class?: string;
+}
+const { more, class: className = '' } = Astro.props;
+---
+
+<span
+  class={[
+    'inline-flex items-center [&>*]:ring-2 [&>*]:ring-white [&>*:not(:first-child)]:-ml-3',
+    className,
+  ].filter(Boolean).join(' ')}
+>
+  <slot />
+  {
+    more ? (
+      <span class="inline-flex items-center justify-center shrink-0 rounded-full w-8 h-8 -ml-3 bg-gray-100 text-gray-600 text-xs font-semibold ring-2 ring-white">
+        +{more}
+      </span>
+    ) : null
+  }
+</span>

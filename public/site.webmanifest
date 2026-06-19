@@ -1,0 +1,13 @@
+{
+  "name": "Kansas City Tech Enthusiasts",
+  "short_name": "KCTE",
+  "description": "A friendly, casual group connecting tech enthusiasts, developers, designers, innovators, and curious minds.",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "theme_color": "#2293D2",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

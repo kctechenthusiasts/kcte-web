@@ -1,0 +1,22 @@
+---
+/** Eyebrow + title + optional sub-copy block that leads a section. */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  center?: boolean;
+  class?: string;
+}
+const { eyebrow, title, center = false, class: className = '' } = Astro.props;
+---
+
+<div class={[center ? 'max-w-3xl mx-auto text-center' : 'max-w-3xl', 'mb-10', className].filter(Boolean).join(' ')}>
+  {
+    eyebrow && (
+      <p class="font-display font-semibold text-sm tracking-wider uppercase text-primary-600 mb-2.5">
+        {eyebrow}
+      </p>
+    )
+  }
+  {title && <h2 class="font-display font-bold text-3xl sm:text-4xl text-gray-900 tracking-tight mb-3.5">{title}</h2>}
+  <slot />
+</div>
